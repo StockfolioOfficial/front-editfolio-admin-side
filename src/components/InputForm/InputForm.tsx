@@ -13,11 +13,9 @@ export interface inputsProps {
   inputs: inputProps[];
   button: JSX.Element;
   values: any;
-  isValid: boolean | undefined;
   error?: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: () => void;
-  reset: () => void;
   handleError: () => void;
 }
 
@@ -25,22 +23,15 @@ const InputForm = ({
   inputs,
   button,
   values,
-  isValid,
   error,
   handleChange,
   handleSubmit,
-  reset,
   handleError,
 }: inputsProps) => {
   return (
     <Form
       onSubmit={(e) => {
         handleError();
-        if (!isValid) {
-          e.preventDefault();
-          reset();
-          return;
-        }
         handleSubmit();
         e.preventDefault();
       }}
