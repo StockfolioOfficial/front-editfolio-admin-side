@@ -4,13 +4,21 @@ import { inputProps as inputItem } from './InputForm';
 
 interface inputProps {
   input: inputItem;
+  value: any;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Inputs = ({ input }: inputProps) => {
+const Inputs = ({ input, value, handleChange }: inputProps) => {
   return (
     <>
       <Label>{input.label}</Label>
-      <Input />
+      <Input
+        placeholder={input.placeholder}
+        name={input.id}
+        value={value}
+        onChange={handleChange}
+        type={input.type}
+      />
     </>
   );
 };

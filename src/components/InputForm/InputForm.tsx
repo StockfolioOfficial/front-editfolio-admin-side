@@ -12,25 +12,68 @@ export interface inputProps {
 export interface inputsProps {
   inputs: inputProps[];
   button: JSX.Element;
+  values: any;
+  isValid: boolean | undefined;
+  error?: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: () => void;
+  reset: () => void;
+  handleError: () => void;
 }
 
-const InputForm = ({ inputs, button }: inputsProps) => {
+const InputForm = ({
+  inputs,
+  button,
+  values,
+  isValid,
+  error,
+  handleChange,
+  handleSubmit,
+  reset,
+  handleError,
+}: inputsProps) => {
   return (
-    <Form>
+    <Form
+      onSubmit={(e) => {
+        handleError();
+        if (!isValid) {
+          e.preventDefault();
+          reset();
+          return;
+        }
+        handleSubmit();
+        e.preventDefault();
+      }}
+    >
       {inputs.map((input) => (
-        <Inputs key={input.id} input={input} />
+        <Inputs
+          key={input.id}
+          input={input}
+          value={values[input.id]}
+          handleChange={handleChange}
+        />
       ))}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {button}
     </Form>
   );
 };
 
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 336px;
-  margin: 100px auto;
+  margin: 0 auto;
+`;
+
+const ErrorMessage = styled.p`
+  width: 100%;
+  margin-top: -24px;
+  padding: 0 0 0 12px;
+  color: ${({ theme }) => theme.color.purple};
+  font-size: 13px;
+  line-height: 1.5384615385;
 `;
 
 export default InputForm;
