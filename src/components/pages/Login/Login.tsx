@@ -17,6 +17,10 @@ const Login = () => {
   const fetch = new FetchData();
 
   const submitData = () => {
+    if (!isValid) {
+      reset();
+      return;
+    }
     fetch
       .fetchLogin(values)
       .then(
@@ -36,8 +40,6 @@ const Login = () => {
           values={values}
           handleChange={handleChange}
           handleSubmit={() => handleSubmit(submitData)}
-          reset={reset}
-          isValid={isValid}
           handleError={handleError}
           error={error}
         />
