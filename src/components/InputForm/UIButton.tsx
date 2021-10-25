@@ -17,7 +17,7 @@ const UIButton = ({ text, color }: buttonProps) => {
 const Button = styled.button<buttonStyle>`
   width: 336px;
   height: 48px;
-  margin-top: 60px;
+  margin: 28px 0;
   background-color: ${({ theme, color }) => theme.color[color]};
   border-radius: 6px;
   color: ${({ theme }) => theme.color.white};
