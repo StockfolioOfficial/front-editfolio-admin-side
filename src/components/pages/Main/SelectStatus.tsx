@@ -8,11 +8,12 @@ interface DropDown {
 }
 
 const DROPMENU = [
-  { id: 1, editor: '김승찬' },
-  { id: 2, editor: '주철진' },
-  { id: 3, editor: '송치헌' },
-  { id: 4, editor: '성우진' },
-  { id: 5, editor: '김정수' },
+  { id: 1, editor: '영상검토중' },
+  { id: 2, editor: '편집자 배정 중' },
+  { id: 3, editor: '편집 중' },
+  { id: 4, editor: '이펙트 추가 중' },
+  { id: 5, editor: '수정 중' },
+  { id: 6, editor: '완료' },
 ];
 
 const SelectStatus = () => {

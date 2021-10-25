@@ -31,6 +31,8 @@ const DateSelect = styled.input`
   padding: 14px 0 14px 16px;
   font-size: 13px;
   line-height: 20px;
+  &::-webkit-calendar-picker-indicator {
+  }
 `;
 
 const ArrowIcon = styled(ArrowSvg)`

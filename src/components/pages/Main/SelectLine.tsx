@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import CustomerRequests from './CustomerRequests';
 import EditsCnt from './EditsCnt';
 import SelectDeliveryDate from './SelectDeliveryDate';
 import SelectEditor from './SelectEditor';
@@ -30,6 +31,7 @@ const SelectLine = () => {
           <SelectSubmit />
         </LineList>
       </LineLayout>
+      <CustomerRequests />
     </>
   );
 };

@@ -1,3 +1,4 @@
+import Login from 'components/pages/Login/Login';
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/login" component={Login} />
       </Switch>
     </BrowserRouter>
   );
