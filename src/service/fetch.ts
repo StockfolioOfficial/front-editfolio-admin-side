@@ -11,6 +11,20 @@ class FetchData {
       }),
     }).then((res) => res.json());
   };
+
+  fetchAdd = (values: any) => {
+    return fetch('http://192.168.35.211:8000/user/customer', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: values.name,
+        email: values.id,
+        mobile: values.mobile,
+      }),
+    }).then((res) => res.json());
+  };
 }
 
 export default FetchData;
