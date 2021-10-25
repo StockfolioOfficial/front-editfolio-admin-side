@@ -14,6 +14,7 @@ const useInput = (initialValues: any) => {
   const handleSubmit = useCallback(
     (submitAction) => {
       submitAction();
+      reset();
     },
     [values],
   );
