@@ -9,29 +9,35 @@ import SelectStatus from './SelectStatus';
 import SelectSubmit from './SelectSubmit';
 
 const SelectLine = () => {
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <LineLayout>
-        <LineList>
-          <SelectOrderData />
-        </LineList>
-        <LineList>
-          <SelectDeliveryDate />
-        </LineList>
-        <LineList>
-          <SelectEditor />
-        </LineList>
-        <LineList>
-          <SelectStatus />
-        </LineList>
-        <LineList>
-          <EditsCnt />
-        </LineList>
-        <LineList>
-          <SelectSubmit />
-        </LineList>
-      </LineLayout>
-      <CustomerRequests />
+      <form onSubmit={handleSubmit}>
+        <LineLayout>
+          <LineList>
+            <SelectOrderData />
+          </LineList>
+          <LineList>
+            <SelectDeliveryDate />
+          </LineList>
+          <LineList>
+            <SelectEditor />
+          </LineList>
+          <LineList>
+            <SelectStatus />
+          </LineList>
+          <LineList>
+            <EditsCnt />
+          </LineList>
+          <LineList>
+            <SelectSubmit />
+          </LineList>
+        </LineLayout>
+        <CustomerRequests />
+      </form>
     </>
   );
 };

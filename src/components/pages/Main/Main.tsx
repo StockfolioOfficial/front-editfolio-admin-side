@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
-import ProductionInformation from './ProductionInformation';
-import SelectLine from './SelectLine';
-import CustomerInformation from './CustomerInformation';
+// import ProductionInformation from './ProductionInformation';
+// import SelectLine from './SelectLine';
+// import CustomerInformation from './CustomerInformation';
 
 const Main = () => {
   return (
@@ -13,9 +13,9 @@ const Main = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          <ProductionInformation />
+          {/* <ProductionInformation />
           <SelectLine />
-          <CustomerInformation />
+          <CustomerInformation /> */}
         </MainLayout>
       </MainBox>
     </>

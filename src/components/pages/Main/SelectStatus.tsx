@@ -34,6 +34,7 @@ const SelectStatus = () => {
     nameInput.current.focus();
     nameInput.current.value = value;
     setShowMenu(false);
+    setInputValues(nameInput.current.value);
   };
 
   const matchValue = DROPMENU.filter((list) =>
@@ -43,7 +44,12 @@ const SelectStatus = () => {
     <>
       <OrderDateTitle>상태</OrderDateTitle>
       <SelectInputBox onClick={handleDropToggle}>
-        <SelectInput onChange={handleOnChange} ref={nameInput} />
+        <SelectInput
+          name="status"
+          value={inputValues}
+          onChange={handleOnChange}
+          ref={nameInput}
+        />
         <ArrowIcon showMenu={showMenu} />
         {showMenu && <SelectList matchValue={matchValue} onReset={onReset} />}
       </SelectInputBox>
@@ -59,19 +65,25 @@ const OrderDateTitle = styled.div`
 `;
 
 const SelectInputBox = styled.div`
+  position: relative;
   margin: 8px 0 0 56px;
-  border-radius: 6px;
   background-color: #ffffff;
 `;
 
 const SelectInput = styled.input`
-  padding: 14px 0 14px 16px;
+  position: relative;
+  padding: 16px 35px 13px 14px;
+  border-radius: 6px;
   font-size: 13px;
   line-height: 20px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 `;
 
 const ArrowIcon = styled(ArrowSvg)<DropDown>`
-  margin-right: 21px;
+  position: absolute;
+  top: 21px;
+  right: 21px;
   transform: ${(props) => (props.showMenu ? 'rotate(180deg)' : 'rotate(0)')};
 `;
 
