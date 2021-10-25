@@ -5,19 +5,22 @@ import { ReactComponent as DeleteIcon } from '../../assets/images/ic_circle_squa
 
 interface headerProps {
   placeholder: string;
+  isSearch: boolean;
 }
 
-const TitleHeader = ({ placeholder }: headerProps) => {
+const TitleHeader = ({ placeholder, isSearch }: headerProps) => {
   return (
     <Container>
       <Title>제작 의뢰 요청</Title>
-      <SearchBox>
-        <SearchInput placeholder={placeholder} />
-        <IconBox>
-          <DeleteSvg />
-          <SearchSvg />
-        </IconBox>
-      </SearchBox>
+      {isSearch && (
+        <SearchBox>
+          <SearchInput placeholder={placeholder} />
+          <IconBox>
+            <DeleteSvg />
+            <SearchSvg />
+          </IconBox>
+        </SearchBox>
+      )}
     </Container>
   );
 };
