@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
 import ProductionInformation from './ProductionInformation';
+import SelectLine from './SelectLine';
+import CustomerInformation from './CustomerInformation';
 
 const Main = () => {
   return (
@@ -12,6 +14,8 @@ const Main = () => {
         <Aside />
         <MainLayout>
           <ProductionInformation />
+          <SelectLine />
+          <CustomerInformation />
         </MainLayout>
       </MainBox>
     </>
