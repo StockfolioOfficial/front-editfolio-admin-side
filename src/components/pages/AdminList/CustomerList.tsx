@@ -5,7 +5,10 @@ import TitleHeader from '../../TitleHeader/TitleHeader';
 
 const CustomerList = () => {
   const fetch = new FetchData();
-  const { list, renderCategory, renderList } = useList(fetch.fetchList);
+  const { list, renderCategory, renderList } = useList(
+    'customerList',
+    fetch.fetchList,
+  );
 
   console.log(list);
   return (
