@@ -2,7 +2,15 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 interface colorProps {
-  color: 'purple' | 'gray' | 'violet' | 'mint' | 'skyblue' | 'black';
+  color:
+    | 'purple'
+    | 'gray'
+    | 'violet'
+    | 'mint'
+    | 'skyblue'
+    | 'black'
+    | 'white'
+    | 'red';
 }
 
 interface itemProps {
@@ -18,9 +26,10 @@ interface itemProps {
   nickname: string;
   email: string;
   mobile: string;
+  role: string;
 }
 
-const useList = (fetch?: () => Promise<any>) => {
+const useList = (page: string, fetch?: () => Promise<any>) => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
@@ -86,6 +95,63 @@ const useList = (fetch?: () => Promise<any>) => {
 
       default:
         return undefined;
+        break;
+    }
+  };
+
+  const Button = styled.button<colorProps>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    margin-right: 16px;
+    background-color: ${({ theme, color }) => theme.color[color]};
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.5384615385;
+  `;
+
+  const renderButton = (page: string, role: string) => {
+    switch (page) {
+      case 'request':
+        return (
+          <>
+            <Button color="purple">가져가기</Button>
+            <Button color="white">자세히</Button>
+          </>
+        );
+        break;
+      case 'ongoing':
+      case 'complete':
+        return (
+          <>
+            <Button color="white">자세히</Button>
+          </>
+        );
+        break;
+      case 'adminList':
+        if (role === 'super_admin') {
+          return (
+            <>
+              <Button color="white">수정</Button>
+              <Button color="red">삭제</Button>
+            </>
+          );
+          break;
+        }
+        return undefined;
+        break;
+      case 'customerList':
+        return (
+          <>
+            <Button color="white">보기</Button>
+            <Button color="red">삭제</Button>
+          </>
+        );
+        break;
+      default:
+        return undefined;
+        break;
     }
   };
 
@@ -119,6 +185,7 @@ const useList = (fetch?: () => Promise<any>) => {
 
   const Item = styled.li`
     display: flex;
+    align-items: center;
     margin-left: 32px;
 
     & span {
@@ -149,6 +216,13 @@ const useList = (fetch?: () => Promise<any>) => {
     background-color: ${({ theme, color }) => theme.color[color]};
   `;
 
+  const ButtonBox = styled.div`
+    display: flex;
+    align-items: center;
+    width: 212px;
+    transform: translateY(-25%);
+  `;
+
   const renderList = () => {
     return (
       <List>
@@ -163,13 +237,14 @@ const useList = (fetch?: () => Promise<any>) => {
             {item.email && <Content>{item.email}</Content>}
             {item.mobile && <Content>{item.mobile}</Content>}
             {changeState(item.state)}
+            <ButtonBox>{renderButton(page, item.role)}</ButtonBox>
           </Item>
         ))}
       </List>
     );
   };
 
-  return { list, renderList, renderCategory, changeState };
+  return { list, renderList, renderCategory, changeState, renderButton };
 };
 
 export default useList;
