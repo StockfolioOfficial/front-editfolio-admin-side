@@ -29,7 +29,8 @@ const TitleHeader = ({ title, placeholder, isSearch }: headerProps) => {
 const Container = styled.header`
   display: flex;
   align-items: center;
-  padding: 40px 32px 16px;
+  margin-left: 32px;
+  padding: 40px 32px 16px 0;
   border-bottom: 1px solid ${({ theme }) => theme.color.stone};
   max-width: 1280px;
 `;
