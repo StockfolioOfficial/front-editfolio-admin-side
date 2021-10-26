@@ -25,6 +25,10 @@ class FetchData {
       }),
     }).then((res) => res.json());
   };
+
+  fetchList = () => {
+    return fetch('/data/list.json').then((res) => res.json());
+  };
 }
 
 export default FetchData;

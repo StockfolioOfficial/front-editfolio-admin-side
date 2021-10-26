@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Aside from 'components/Aside/Aside';
 import Nav from 'components/pages/Nav/Nav';
 // import AdditionalPage from './AdditionalPage';
-// import CustomerList from './CustomerList';
-import CustomerData from './CustomerData';
+import CustomerList from './CustomerList';
+// import CustomerData from './CustomerData';
 
 const AdminList = () => {
   return (
@@ -14,8 +14,8 @@ const AdminList = () => {
         <Aside />
         <MainLayout>
           {/* <AdditionalPage /> */}
-          {/* <CustomerList /> */}
-          <CustomerData />
+          <CustomerList />
+          {/* <CustomerData /> */}
         </MainLayout>
       </MainBox>
     </>
