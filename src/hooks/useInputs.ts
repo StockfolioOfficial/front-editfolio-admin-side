@@ -21,7 +21,7 @@ const useInput = (initialValues: any) => {
 
   const reset = useCallback(() => setValues(initialValues), [initialValues]);
 
-  return { values, handleChange, handleSubmit, reset };
+  return { values, handleChange, handleSubmit, reset, setValues };
 };
 
 export default useInput;
