@@ -29,11 +29,10 @@ const SelectList = ({ matchValue, onReset }: SelectListProps) => {
 
 const DropBox = styled.div`
   width: 180px;
-  height: 180px;
   border-radius: 6px;
   padding: 5px;
   background-color: white;
-
+  position: absolute;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 `;
 
