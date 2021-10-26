@@ -11,8 +11,8 @@ const useValidate = ({ id, password }: validateInter) => {
   const idValid =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
-  const passwordValid = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
-
+  const passwordValid =
+    /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$|(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
   const isValid =
     idValid.test(id as string) && passwordValid.test(password as string);
 

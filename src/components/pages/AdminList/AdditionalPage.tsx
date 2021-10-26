@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import useInput from 'hooks/useInputs';
 import useValidate from 'hooks/useValidate';
 import FetchData from 'service/fetch';
-import Aside from 'components/Aside/Aside';
-import Nav from 'components/pages/Nav/Nav';
 import TitleHeader from 'components/TitleHeader/TitleHeader';
 import InputForm from '../../InputForm/InputForm';
 import AddButton from '../../Buttons/AddButton';
@@ -28,36 +26,19 @@ const AdditionalPage = () => {
 
   return (
     <>
-      <Nav />
-      <MainBox>
-        <Aside />
-        <MainLayout>
-          <TitleHeader placeholder="" isSearch={false} />
-          <Margin />
-          <InputForm
-            inputs={INPUTS}
-            button={<AddButton />}
-            values={values}
-            handleChange={handleChange}
-            handleSubmit={() => handleSubmit(addCustom)}
-            handleError={handleError}
-          />
-        </MainLayout>
-      </MainBox>
+      <TitleHeader title="고객추가" placeholder="" isSearch={false} />
+      <Margin />
+      <InputForm
+        inputs={INPUTS}
+        button={<AddButton />}
+        values={values}
+        handleChange={handleChange}
+        handleSubmit={() => handleSubmit(addCustom)}
+        handleError={handleError}
+      />
     </>
   );
 };
-
-const MainBox = styled.main`
-  display: flex;
-`;
-
-const MainLayout = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  background-color: #fafafa;
-`;
 
 const Margin = styled.div`
   margin-bottom: 100px;

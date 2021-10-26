@@ -1,11 +1,11 @@
 import TitleHeader from 'components/TitleHeader/TitleHeader';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const CustomerInformationSubmit = () => {
   return (
     <>
-      <TitleHeader placeholder="" isSearch={false} />
+      <TitleHeader title="고객정보" placeholder="" isSearch={false} />
       <CustomerInfoLayout>
         <CustomerDirectLayout>
           <BoxLayout>

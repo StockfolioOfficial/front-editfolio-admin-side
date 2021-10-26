@@ -4,18 +4,24 @@ import styled from 'styled-components';
 interface buttonProps {
   text: string;
   color: 'purple' | 'skyblue';
+  width: string;
 }
 
 interface buttonStyle {
   color: 'purple' | 'skyblue';
+  width: string;
 }
 
-const UIButton = ({ text, color }: buttonProps) => {
-  return <Button color={color}>{text}</Button>;
+const UIButton = ({ width, text, color }: buttonProps) => {
+  return (
+    <Button width={width} color={color}>
+      {text}
+    </Button>
+  );
 };
 
 const Button = styled.button<buttonStyle>`
-  width: 336px;
+  width: ${({ width }) => width};
   height: 48px;
   margin: 28px 0;
   background-color: ${({ theme, color }) => theme.color[color]};

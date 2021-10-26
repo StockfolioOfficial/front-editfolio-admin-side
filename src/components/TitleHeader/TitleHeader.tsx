@@ -37,6 +37,7 @@ const Container = styled.header`
 
 const Title = styled.h1`
   font-size: 24px;
+  font-weight: 700;
   line-height: 1.4166666667;
   letter-spacing: 0.2px;
   margin-right: 60px;

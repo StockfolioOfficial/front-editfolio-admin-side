@@ -2,11 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import CustomerSubInformation from './CustomerSubInformation';
 
-const CustomerInformation = () => {
+interface customerProps {
+  isRequest: boolean;
+}
+
+const CustomerInformation = ({ isRequest }: customerProps) => {
   return (
     <>
-      <Linner />
-      <ProductSubTitle>고객 정보</ProductSubTitle>
+      {isRequest && (
+        <>
+          <Linner />
+          <ProductSubTitle>고객 정보</ProductSubTitle>
+        </>
+      )}
       <CustomerInfoBox>
         <CustomerSubInformation />
       </CustomerInfoBox>

@@ -4,7 +4,7 @@ import React from 'react';
 const LoginButton = () => {
   return (
     <>
-      <UIButton text="로그인" color="purple" />
+      <UIButton width="336px" text="로그인" color="purple" />
     </>
   );
 };
