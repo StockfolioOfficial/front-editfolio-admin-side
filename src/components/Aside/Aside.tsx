@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { ReactComponent as AdminListIcon } from '../../assets/styles/adminList.svg';
 import { ReactComponent as UserListIcon } from '../../assets/styles/userList.svg';
@@ -7,6 +8,12 @@ import { ReactComponent as RequestingIcon } from '../../assets/styles/Requesting
 import { ReactComponent as RequestFinishIcon } from '../../assets/styles/requestFinish.svg';
 
 const Aside = () => {
+  const history = useHistory();
+
+  const changePage = (path: string) => {
+    history.push(path);
+  };
+
   return (
     <AsideBox>
       <UserManagement>User 관리</UserManagement>
@@ -21,7 +28,9 @@ const Aside = () => {
       <ProductionRequest>제작 의뢰</ProductionRequest>
       <UserListBox>
         <RequestSvg />
-        <UserListText>제작 의뢰 요청</UserListText>
+        <UserListText onClick={() => changePage('/request-production')}>
+          제작 의뢰 요청
+        </UserListText>
       </UserListBox>
       <UserListBox>
         <RequestingSvg />
@@ -58,6 +67,12 @@ const AdminListBox = styled.div`
   width: 260px;
   height: 48px;
   margin: 30px 24px 0 40px;
+  border-radius: 100px;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.mint};
+    color: ${({ theme }) => theme.color.white};
+    fill: ${({ theme }) => theme.color.white};
+  }
 `;
 
 const AdminIcon = styled(AdminListIcon)`
@@ -79,6 +94,12 @@ const UserListBox = styled.div`
   width: 260px;
   height: 48px;
   margin: 30px 24px 0 40px;
+  border-radius: 100px;
+  &:hover {
+    background-color: ${({ theme }) => theme.color.mint};
+    color: ${({ theme }) => theme.color.white};
+    fill: ${({ theme }) => theme.color.white};
+  }
 `;
 
 const UserIcon = styled(UserListIcon)`

@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
-import CustomerInformationSubmit from './CustomerInformationSubmit';
-// import ProductionInformation from './ProductionInformation';
-// import SelectLine from './SelectLine';
+// import CustomerInformationSubmit from './CustomerInformationSubmit';
+import ProductionInformation from './ProductionInformation';
+import SelectLine from './SelectLine';
 // import CustomerInformation from './CustomerInformation';
 
 const Main = () => {
@@ -14,10 +15,10 @@ const Main = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          <CustomerInformationSubmit />
-          {/* <ProductionInformation />
+          {/* <CustomerInformationSubmit /> */}
+          <ProductionInformation />
           <SelectLine />
-          <CustomerInformation /> */}
+          {/* <CustomerInformation /> */}
         </MainLayout>
       </MainBox>
     </>
