@@ -4,7 +4,7 @@ import UIButton from 'components/InputForm/UIButton';
 const AddAdmin = () => {
   return (
     <>
-      <UIButton text="추가" color="purple" />
+      <UIButton width="336px" text="추가" color="purple" />
     </>
   );
 };
