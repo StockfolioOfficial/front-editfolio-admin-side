@@ -21,6 +21,7 @@ const NavBox = styled.nav`
   display: flex;
   justify-content: space-between;
   height: 60px;
+  border-bottom: 1px solid ${({ theme }) => theme.color.stone};
 `;
 
 const LogoImg = styled.img`
