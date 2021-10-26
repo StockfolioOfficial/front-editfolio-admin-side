@@ -33,16 +33,23 @@ const SelectEditor = () => {
     nameInput.current.focus();
     nameInput.current.value = value;
     setShowMenu(false);
+    setInputValues(nameInput.current.value);
   };
 
   const matchValue = DROPMENU.filter((list) =>
     list.editor.includes(inputValues),
   );
+
   return (
     <>
       <OrderDateTitle>담당 편집자</OrderDateTitle>
       <SelectInputBox onClick={handleDropToggle}>
-        <SelectInput onChange={handleOnChange} ref={nameInput} />
+        <SelectInput
+          name="editors"
+          value={inputValues}
+          onChange={handleOnChange}
+          ref={nameInput}
+        />
         <ArrowIcon showMenu={showMenu} />
         {showMenu && <SelectList matchValue={matchValue} onReset={onReset} />}
       </SelectInputBox>
@@ -70,6 +77,7 @@ const SelectInput = styled.input`
   font-size: 13px;
   line-height: 20px;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 `;
 
 const ArrowIcon = styled(ArrowSvg)<DropDown>`

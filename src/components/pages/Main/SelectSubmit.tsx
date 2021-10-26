@@ -4,7 +4,9 @@ import styled from 'styled-components';
 const SelectSubmit = () => {
   return (
     <>
-      <SaveButton>저장</SaveButton>
+      <SaveButton type="submit" value="Submit">
+        저장
+      </SaveButton>
     </>
   );
 };
