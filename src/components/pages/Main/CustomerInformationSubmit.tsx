@@ -1,8 +1,45 @@
 import TitleHeader from 'components/TitleHeader/TitleHeader';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import useInput from 'hooks/useInputs';
+
+// interface userInfo {
+//   assignee: string;
+//   due_data: string;
+//   end: string;
+//   id: string;
+//   name: string;
+//   orderable_cnt: string;
+//   ordered_at_datetime: string;
+//   start: string;
+//   state: number;
+// }
 
 const CustomerInformationSubmit = () => {
+  const { values, handleChange, setValues } = useInput({
+    assignee: '',
+    due_data: '',
+    end: '',
+    id: '',
+    name: '',
+    orderable_cnt: '',
+    ordered_at_datetime: '',
+    start: '',
+    state: 1,
+  });
+
+  const fetchData = () => {
+    fetch(`/data/proceeding1.json`)
+      .then((res) => res.json())
+      .then((users) => {
+        setValues(users);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <TitleHeader placeholder="" isSearch={false} />
@@ -10,21 +47,37 @@ const CustomerInformationSubmit = () => {
         <CustomerDirectLayout>
           <BoxLayout>
             <CustomerInfoTitle>고객명</CustomerInfoTitle>
-            <InfoTextArea />
+            <InfoTextArea
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+            />
           </BoxLayout>
           <BoxLayout>
             <CustomerInfoTitle>채널명</CustomerInfoTitle>
-            <InfoTextArea />
+            <InfoTextArea
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+            />
           </BoxLayout>
           <BoxLayout>
             <CustomerInfoTitle>채널주소</CustomerInfoTitle>
-            <InfoMiddleTextArea />
+            <InfoMiddleTextArea
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+            />
           </BoxLayout>
         </CustomerDirectLayout>
         <CustomerDirectLayout>
           <BoxLayout>
             <CustomerInfoTitle>이메일</CustomerInfoTitle>
-            <InfoTextArea />
+            <InfoTextArea
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+            />
           </BoxLayout>
           <BoxLayout>
             <CustomerInfoTitle>전화번호</CustomerInfoTitle>
