@@ -7,13 +7,13 @@ import TitleHeader from 'components/TitleHeader/TitleHeader';
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
 
-const MENULIST = ['날짜', '고객명(채널명)'];
+const MENULIST = ['날짜', '이름', ' 편집자', '상태'];
 
-const RequestProductionPage = () => {
+const RequestProductingPage = () => {
   const handleFetch = new FetchData();
 
   const { renderCategory, renderList } = useList(
-    'request',
+    'ongoing',
     handleFetch.fetchList,
   );
 
@@ -24,7 +24,7 @@ const RequestProductionPage = () => {
         <Aside />
         <MainLayout>
           <TitleHeader
-            title="제작 의뢰 요청"
+            title="제작 의뢰 진행중"
             placeholder="휴대폰 번호 검색"
             isSearch
           />
@@ -48,4 +48,4 @@ const MainLayout = styled.div`
   background-color: #fafafa;
 `;
 
-export default RequestProductionPage;
+export default RequestProductingPage;

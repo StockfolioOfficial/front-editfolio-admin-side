@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface colorProps {
@@ -11,6 +12,8 @@ interface colorProps {
     | 'black'
     | 'white'
     | 'red';
+  width?: string;
+  fontColor?: string;
 }
 
 interface itemProps {
@@ -103,21 +106,32 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: ${(props) => props.width};
     height: 32px;
     margin-right: 16px;
     background-color: ${({ theme, color }) => theme.color[color]};
+    color: ${(props) => props.fontColor};
     border-radius: 6px;
     font-size: 13px;
     line-height: 1.5384615385;
   `;
 
   const renderButton = (page: string, role: string) => {
+    const history = useHistory();
     switch (page) {
       case 'request':
         return (
           <>
-            <Button color="purple">가져가기</Button>
-            <Button color="white">자세히</Button>
+            <Button color="purple" width="84px" fontColor="white">
+              가져가기
+            </Button>
+            <Button
+              color="white"
+              width="71px"
+              onClick={() => history.push('/detail')}
+            >
+              자세히
+            </Button>
           </>
         );
         break;
@@ -125,7 +139,9 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
       case 'complete':
         return (
           <>
-            <Button color="white">자세히</Button>
+            <Button color="white" onClick={() => history.push('/detail')}>
+              자세히
+            </Button>
           </>
         );
         break;
@@ -133,7 +149,9 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
         if (role === 'super_admin') {
           return (
             <>
-              <Button color="white">수정</Button>
+              <Button color="purple" width="84px" fontColor="white">
+                수정
+              </Button>
               <Button color="red">삭제</Button>
             </>
           );
@@ -144,7 +162,12 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
       case 'customerList':
         return (
           <>
-            <Button color="white">보기</Button>
+            <Button
+              color="white"
+              onClick={() => history.push('/cutomer-detail')}
+            >
+              보기
+            </Button>
             <Button color="red">삭제</Button>
           </>
         );
@@ -157,7 +180,7 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
 
   const CategoryList = styled.ul`
     display: flex;
-    max-width: 1152px;
+    max-width: 1200px;
     margin: 16px 0 24px 32px;
     border-bottom: 1px solid ${({ theme }) => theme.color.paleBlue};
   `;
@@ -187,6 +210,8 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     display: flex;
     align-items: center;
     margin-left: 32px;
+    width: 1200px;
+    position: relative;
 
     & span {
       width: 212px;
@@ -197,7 +222,9 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     }
   `;
 
-  const Content = styled.span``;
+  const Content = styled.span`
+    font-size: 13px;
+  `;
 
   const State = styled.div`
     display: flex;
@@ -205,6 +232,7 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     width: 212px;
     margin-bottom: 12px;
     padding: 14px 0;
+    font-size: 13px;
     text-align: center;
   `;
 
@@ -221,6 +249,9 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     align-items: center;
     width: 212px;
     transform: translateY(-25%);
+    margin-left: 200px;
+    position: absolute;
+    right: 0px;
   `;
 
   const renderList = () => {

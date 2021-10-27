@@ -23,7 +23,9 @@ const Aside = () => {
       </AdminListBox>
       <UserListBox>
         <UserIcon />
-        <UserListText>고객 목록</UserListText>
+        <UserListText onClick={() => changePage('admin-list')}>
+          고객 목록
+        </UserListText>
       </UserListBox>
       <ProductionRequest>제작 의뢰</ProductionRequest>
       <UserListBox>
@@ -34,11 +36,15 @@ const Aside = () => {
       </UserListBox>
       <UserListBox>
         <RequestingSvg />
-        <UserListText>제작 의뢰 진행중</UserListText>
+        <UserListText onClick={() => changePage('/request-producting')}>
+          제작 의뢰 진행중
+        </UserListText>
       </UserListBox>
       <UserListBox>
         <RequestFinishSvg />
-        <UserListText>제작 의뢰 완료</UserListText>
+        <UserListText onClick={() => changePage('request-finish')}>
+          제작 의뢰 완료
+        </UserListText>
       </UserListBox>
     </AsideBox>
   );

@@ -6,19 +6,19 @@ import Aside from '../../Aside/Aside';
 // import CustomerInformationSubmit from './CustomerInformationSubmit';
 import ProductionInformation from './ProductionInformation';
 import SelectLine from './SelectLine';
-import AdditionalPage from '../AdminList/AdditionalPage';
-// import CustomerInformation from './CustomerInformation';
+import CustomerInformation from './CustomerInformation';
 
-const Main = () => {
+const DetailPage = () => {
   return (
     <>
       <Nav />
       <MainBox>
         <Aside />
         <MainLayout>
+          {/* <CustomerInformationSubmit /> */}
           <ProductionInformation />
           <SelectLine />
-          <AdditionalPage />
+          <CustomerInformation isRequest />
         </MainLayout>
       </MainBox>
     </>
@@ -36,4 +36,4 @@ const MainLayout = styled.div`
   background-color: #fafafa;
 `;
 
-export default Main;
+export default DetailPage;
