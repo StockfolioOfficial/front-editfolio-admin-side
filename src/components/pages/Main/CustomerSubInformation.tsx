@@ -27,7 +27,7 @@ const CustomerSubInformation = () => {
       <DirectionLayout>
         <CustomerFirstSubLayout>
           <CustomerPersonaTitle>페르소나</CustomerPersonaTitle>
-          <CustomerLine>
+          <CustomerLine href="https://https://stockfolio.notion.site/Stockers-1-657e6a9b069544758d5012ec9d0988e0">
             https://https://stockfolio.notion.site/Stockers-1-657e6a9b069544758d5012ec9d0988e0
           </CustomerLine>
         </CustomerFirstSubLayout>
@@ -35,7 +35,7 @@ const CustomerSubInformation = () => {
       <DirectionLayout>
         <CustomerFirstSubLayout>
           <CustomerPersonaTitle>OneDrive</CustomerPersonaTitle>
-          <CustomerLine>
+          <CustomerLine href="https://www.microsoft.com/ko-kr/microsoft-365/onedrive/online-cloud-storage">
             https://www.microsoft.com/ko-kr/microsoft-365/onedrive/online-cloud-storage
           </CustomerLine>
         </CustomerFirstSubLayout>
@@ -84,7 +84,7 @@ const CustomerPersonaTitle = styled.div`
   margin: 0 -15px 0 36px;
 `;
 
-const CustomerLine = styled.div`
+const CustomerLine = styled.a`
   width: 100%;
   padding: 14px 0 0 12px;
   font-size: 13px;

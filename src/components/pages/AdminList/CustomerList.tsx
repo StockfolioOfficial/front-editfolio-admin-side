@@ -5,12 +5,11 @@ import TitleHeader from '../../TitleHeader/TitleHeader';
 
 const CustomerList = () => {
   const fetch = new FetchData();
-  const { list, renderCategory, renderList } = useList(
+  const { renderCategory, renderList } = useList(
     'customerList',
     fetch.fetchList,
   );
 
-  console.log(list);
   return (
     <>
       <TitleHeader

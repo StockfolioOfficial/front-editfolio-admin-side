@@ -12,7 +12,7 @@ const useValidate = ({ id, password }: validateInter) => {
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
   const passwordValid =
-    /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$|(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
+    /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$|(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
   const isValid =
     idValid.test(id as string) && passwordValid.test(password as string);
 
@@ -20,6 +20,8 @@ const useValidate = ({ id, password }: validateInter) => {
 
   const handleError = useCallback(() => {
     setError(message);
+    console.log(idValid.test(id as string));
+    console.log(passwordValid.test(password as string));
   }, [id, password]);
 
   return { isValid, error, handleError };
