@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as ArrowSvg } from '../../../assets/styles/arrowPurple.svg';
 
 const SelectDeliveryDate = () => {
+  const [inputDate, setInputDate] = useState('');
+  const dateInput = useRef<HTMLInputElement | null>(null);
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputDate(e.target.value);
+  };
+
   return (
     <>
       <OrderDateTitle>납품 예정일</OrderDateTitle>
       <DateBox>
-        <DateSelect type="date" name="calender" />
+        <DateSelect
+          type="date"
+          name="calender"
+          value={inputDate}
+          onChange={handleOnChange}
+          ref={dateInput}
+        />
         <ArrowIcon />
       </DateBox>
     </>

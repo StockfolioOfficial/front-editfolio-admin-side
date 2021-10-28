@@ -7,7 +7,8 @@ const CustomerList = () => {
   const fetch = new FetchData();
   const { renderCategory, renderList } = useList(
     'customerList',
-    fetch.fetchList,
+    'request',
+    fetch.customerFetchList,
   );
 
   return (

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
-// import CustomerInformationSubmit from './CustomerInformationSubmit';
 import ProductionInformation from './ProductionInformation';
 import SelectLine from './SelectLine';
 import CustomerInformation from './CustomerInformation';
@@ -15,7 +14,6 @@ const DetailPage = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          {/* <CustomerInformationSubmit /> */}
           <ProductionInformation />
           <SelectLine />
           <CustomerInformation isRequest />

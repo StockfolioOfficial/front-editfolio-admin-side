@@ -14,7 +14,8 @@ const RequestProductingPage = () => {
 
   const { renderCategory, renderList } = useList(
     'ongoing',
-    handleFetch.fetchList,
+    'request',
+    handleFetch.requestingFetchList,
   );
 
   return (

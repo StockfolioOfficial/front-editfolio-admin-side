@@ -15,7 +15,7 @@ class FetchData {
   fetchAdd = (values: any) => {
     const headerDict = {
       'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('edit-token') as string,
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
     return fetch('https://api-ef.stockfolio.ai/customer', {
@@ -29,8 +29,48 @@ class FetchData {
     }).then((res) => res.json());
   };
 
-  fetchList = () => {
-    return fetch('/data/list.json').then((res) => res.json());
+  customerFetchList = () => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
+    return fetch('https://api-ef.stockfolio.ai/customer', {
+      headers: new Headers(headerDict),
+    }).then((res) => res.json());
+  };
+
+  requestFetchList = () => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
+    return fetch('https://api-ef.stockfolio.ai/order/ready', {
+      headers: new Headers(headerDict),
+    }).then((res) => res.json());
+  };
+
+  requestingFetchList = () => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
+    return fetch('https://api-ef.stockfolio.ai/order/processing', {
+      headers: new Headers(headerDict),
+    }).then((res) => res.json());
+  };
+
+  requestFinishFetchList = () => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
+    return fetch('https://api-ef.stockfolio.ai/order/done', {
+      headers: new Headers(headerDict),
+    }).then((res) => res.json());
   };
 }
 

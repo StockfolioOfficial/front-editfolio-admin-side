@@ -21,30 +21,22 @@ const Aside = () => {
         <AdminIcon />
         <AdminListText>어드민 목록</AdminListText>
       </AdminListBox>
-      <UserListBox>
+      <UserListBox onClick={() => changePage('admin-list')}>
         <UserIcon />
-        <UserListText onClick={() => changePage('admin-list')}>
-          고객 목록
-        </UserListText>
+        <UserListText>고객 목록</UserListText>
       </UserListBox>
       <ProductionRequest>제작 의뢰</ProductionRequest>
-      <UserListBox>
+      <UserListBox onClick={() => changePage('/request-production')}>
         <RequestSvg />
-        <UserListText onClick={() => changePage('/request-production')}>
-          제작 의뢰 요청
-        </UserListText>
+        <UserListText>제작 의뢰 요청</UserListText>
       </UserListBox>
-      <UserListBox>
+      <UserListBox onClick={() => changePage('/request-producting')}>
         <RequestingSvg />
-        <UserListText onClick={() => changePage('/request-producting')}>
-          제작 의뢰 진행중
-        </UserListText>
+        <UserListText>제작 의뢰 진행중</UserListText>
       </UserListBox>
-      <UserListBox>
+      <UserListBox onClick={() => changePage('request-finish')}>
         <RequestFinishSvg />
-        <UserListText onClick={() => changePage('request-finish')}>
-          제작 의뢰 완료
-        </UserListText>
+        <UserListText>제작 의뢰 완료</UserListText>
       </UserListBox>
     </AsideBox>
   );

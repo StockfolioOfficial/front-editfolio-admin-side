@@ -13,8 +13,8 @@ const AdminList = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          {/* <AdditionalPage /> */}
           <CustomerList />
+          {/* <AdditionalPage /> */}
           {/* <CustomerData /> */}
         </MainLayout>
       </MainBox>
