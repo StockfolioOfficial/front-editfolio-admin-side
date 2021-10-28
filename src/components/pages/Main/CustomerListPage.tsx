@@ -10,11 +10,12 @@ import Aside from '../../Aside/Aside';
 const MENULIST = ['날짜', '이름', ' 편집자', '전화번호'];
 
 const CustomerListPage = () => {
-  const handleFetch = new FetchData();
+  const fetch = new FetchData();
 
   const { renderCategory, renderList } = useList(
     'customerList',
-    handleFetch.fetchList,
+    'request',
+    fetch.customerFetchList,
   );
 
   return (

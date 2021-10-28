@@ -14,7 +14,8 @@ const RequestProductionPage = () => {
 
   const { renderCategory, renderList } = useList(
     'request',
-    handleFetch.fetchList,
+    'request',
+    handleFetch.customerFetchList,
   );
 
   return (

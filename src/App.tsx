@@ -28,7 +28,7 @@ function App(): JSX.Element {
           component={RequestProductingPage}
         />
         <Route exact path="/request-finish" component={RequestFinishPage} />
-        <Route exact path="/detail" component={DetailPage} />
+        <Route exact path="/detail/:userId" component={DetailPage} />
         <Route exact path="/customer-list" component={CustomerListPage} />
       </Switch>
     </BrowserRouter>

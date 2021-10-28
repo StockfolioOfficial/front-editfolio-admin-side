@@ -9,8 +9,13 @@ import SelectStatus from './SelectStatus';
 import SelectSubmit from './SelectSubmit';
 
 const SelectLine = () => {
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const newValue = e.currentTarget;
+    const formData = new FormData(newValue);
+    console.log(formData.get('editors'));
+    console.log(formData.get('status'));
+    console.log(formData.get('calender'));
   };
 
   return (

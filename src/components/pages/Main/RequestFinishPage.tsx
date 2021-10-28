@@ -14,7 +14,8 @@ const RequestFinishPage = () => {
 
   const { renderCategory, renderList } = useList(
     'ongoing',
-    handleFetch.fetchList,
+    'request',
+    handleFetch.requestFinishFetchList,
   );
 
   return (

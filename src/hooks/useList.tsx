@@ -17,27 +17,38 @@ interface colorProps {
 }
 
 interface itemProps {
-  ordered_at_datetime: string;
-  name: string;
-  assignee: string;
-  state: number;
-  orderable_cnt: string;
-  start: string;
-  end: string;
-  due_data: string;
-  ch_name: string;
-  nickname: string;
-  email: string;
-  mobile: string;
-  role: string;
+  assignee?: string;
+  state?: number;
+  orderable_cnt?: string;
+  start?: string;
+  end?: string;
+  due_data?: string;
+  ch_name?: string;
+  nickname?: string;
+  role?: string;
+  channelLink?: string;
+  channelName?: string;
+  createdAt?: string;
+  email?: string;
+  mobile?: string;
+  name?: string;
+  userId?: any;
 }
 
-const useList = (page: string, fetch?: () => Promise<any>) => {
-  const [list, setList] = useState([]);
-
+const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
+  const [list, setList] = useState<any>([]);
   useEffect(() => {
     if (!fetch) return;
-    fetch().then((res: []) => setList(res));
+    fetch().then((res: []) =>
+      setList(
+        role
+          ? res.map((data: any) => ({
+              ...data,
+              role,
+            }))
+          : res,
+      ),
+    );
   }, []);
 
   const changeState = (state: number) => {
@@ -114,9 +125,10 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     border-radius: 6px;
     font-size: 13px;
     line-height: 1.5384615385;
+    border: 1px solid gray;
   `;
 
-  const renderButton = (page: string, role: string) => {
+  const renderButton = (page: string, role: string, userId: string) => {
     const history = useHistory();
     switch (page) {
       case 'request':
@@ -125,10 +137,11 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
             <Button color="purple" width="84px" fontColor="white">
               가져가기
             </Button>
+
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push('/detail')}
+              onClick={() => history.push(`/detail/${userId}`)}
             >
               자세히
             </Button>
@@ -139,7 +152,11 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
       case 'complete':
         return (
           <>
-            <Button color="white" onClick={() => history.push('/detail')}>
+            <Button
+              color="white"
+              width="71px"
+              onClick={() => history.push('/detail')}
+            >
               자세히
             </Button>
           </>
@@ -149,10 +166,12 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
         if (role === 'super_admin') {
           return (
             <>
-              <Button color="purple" width="84px" fontColor="white">
+              <Button color="purple" width="40px" fontColor="white">
                 수정
               </Button>
-              <Button color="red">삭제</Button>
+              <Button color="red" width="40px" fontColor="white">
+                삭제
+              </Button>
             </>
           );
           break;
@@ -164,11 +183,14 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
           <>
             <Button
               color="white"
+              width="40px"
               onClick={() => history.push('/cutomer-detail')}
             >
               보기
             </Button>
-            <Button color="red">삭제</Button>
+            <Button color="red" width="40px" fontColor="white">
+              삭제
+            </Button>
           </>
         );
         break;
@@ -259,16 +281,16 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
       <List>
         {list.map((item: itemProps) => (
           <Item key={item.name}>
-            {item.ordered_at_datetime && (
-              <Content>{item.ordered_at_datetime}</Content>
-            )}
+            {item.createdAt && <Content>{item.createdAt}</Content>}
             {item.name && <Content>{item.name}</Content>}
             {item.nickname && <Content>{item.nickname}</Content>}
             {item.ch_name && <Content>{item.assignee}</Content>}
             {item.email && <Content>{item.email}</Content>}
             {item.mobile && <Content>{item.mobile}</Content>}
-            {changeState(item.state)}
-            <ButtonBox>{renderButton(page, item.role)}</ButtonBox>
+            {item.state && changeState(item.state)}
+            <ButtonBox>
+              {item.role && renderButton(page, item.role, item.userId)}
+            </ButtonBox>
           </Item>
         ))}
       </List>
