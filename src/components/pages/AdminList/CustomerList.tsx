@@ -8,15 +8,18 @@ const CustomerList = () => {
   const { renderCategory, renderList } = useList(
     'customerList',
     'request',
-    fetch.customerFetchList,
+    fetch.adminListFetchList,
   );
 
   return (
     <>
       <TitleHeader
-        title="고객 목록"
+        title="어드민 목록"
         placeholder="이메일, 고객명, 닉네임, 전화번호 검색"
         isSearch
+        isButton
+        buttonTitle="어드민 추가"
+        click="/AdminAddPage"
       />
       {renderCategory(CATEGORY)}
       {renderList()}
@@ -26,4 +29,4 @@ const CustomerList = () => {
 
 export default CustomerList;
 
-const CATEGORY = ['날짜', '고객명(채널명)', '이메일', '전화번호'];
+const CATEGORY = ['날짜', '이름', '닉네임', '이메일'];

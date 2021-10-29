@@ -18,6 +18,24 @@ class FetchData {
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
+    return fetch('https://api-ef.stockfolio.ai/admin', {
+      method: 'POST',
+      headers: new Headers(headerDict),
+      body: JSON.stringify({
+        email: values.email,
+        name: values.name,
+        nickname: values.nickname,
+        password: values.password,
+      }),
+    }).then((res) => res.json());
+  };
+
+  customerFetchAdd = (values: any) => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
     return fetch('https://api-ef.stockfolio.ai/customer', {
       method: 'POST',
       headers: new Headers(headerDict),
@@ -69,6 +87,17 @@ class FetchData {
     };
 
     return fetch('https://api-ef.stockfolio.ai/order/done', {
+      headers: new Headers(headerDict),
+    }).then((res) => res.json());
+  };
+
+  adminListFetchList = () => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
+    return fetch('https://api-ef.stockfolio.ai/admin', {
       headers: new Headers(headerDict),
     }).then((res) => res.json());
   };
