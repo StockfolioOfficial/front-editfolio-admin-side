@@ -32,14 +32,27 @@ interface itemProps {
   email?: string;
   mobile?: string;
   name?: string;
-  userId?: any;
+  userId?: string;
+}
+
+interface OrderItemType {
+  orderId: string;
+  orderedAt: string;
+  ordererChannelLink: string;
+  ordererChannelName: string;
+  ordererName: string;
+  orderState?: number;
+  orderStateContent?: string;
+  assigneeName?: string;
+  assigneeNickname?: string;
 }
 
 const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<itemProps[] | OrderItemType[]>([]);
   useEffect(() => {
+    console.log(fetch);
     if (!fetch) return;
-    fetch().then((res: []) =>
+    fetch().then((res: (itemProps[] | OrderItemType[])[]) =>
       setList(
         role
           ? res.map((data: any) => ({
@@ -119,7 +132,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     align-items: center;
     width: ${(props) => props.width};
     height: 32px;
-    margin-right: 16px;
     background-color: ${({ theme, color }) => theme.color[color]};
     color: ${(props) => props.fontColor};
     border-radius: 6px;
@@ -137,17 +149,15 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             <Button color="purple" width="84px" fontColor="white">
               가져가기
             </Button>
-
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push(`/detail/${userId}`)}
+              onClick={() => history.push(`/detail/${page}/${userId}`)}
             >
               자세히
             </Button>
           </>
         );
-        break;
       case 'ongoing':
       case 'complete':
         return (
@@ -155,13 +165,12 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push('/detail')}
+              onClick={() => history.push(`/detail/${page}/${userId}`)}
             >
               자세히
             </Button>
           </>
         );
-        break;
       case 'adminList':
         if (role === 'super_admin') {
           return (
@@ -174,10 +183,8 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
               </Button>
             </>
           );
-          break;
         }
         return undefined;
-        break;
       case 'customerList':
         return (
           <>
@@ -193,10 +200,8 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             </Button>
           </>
         );
-        break;
       default:
         return undefined;
-        break;
     }
   };
 
@@ -226,21 +231,29 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     );
   };
 
-  const List = styled.ul``;
+  const List = styled.ul`
+    > li:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  `;
 
   const Item = styled.li`
     display: flex;
     align-items: center;
     margin-left: 32px;
-    width: 1200px;
+    padding-right: 40px;
     position: relative;
+    border-radius: 6px;
 
     & span {
       width: 212px;
-      margin-bottom: 12px;
       padding: 14px 0;
       text-align: center;
       color: ${({ theme }) => theme.color.black};
+    }
+
+    &:hover {
+      background-color: ${({ theme }) => theme.color.stone};
     }
   `;
 
@@ -267,29 +280,34 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
   `;
 
   const ButtonBox = styled.div`
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    width: 212px;
-    transform: translateY(-25%);
-    margin-left: 200px;
-    position: absolute;
-    right: 0px;
+    gap: 24px;
+    margin-left: auto;
   `;
 
   const renderList = () => {
+    const viewList = list as itemProps[];
     return (
       <List>
-        {list.map((item: itemProps) => (
+        {viewList.map((item) => (
           <Item key={item.name}>
             {item.createdAt && <Content>{item.createdAt}</Content>}
-            {item.name && <Content>{item.name}</Content>}
+            {item.name && (
+              <Content>
+                {item.name}
+                {item.channelName && `(${item.channelName})`}
+              </Content>
+            )}
             {item.nickname && <Content>{item.nickname}</Content>}
             {item.ch_name && <Content>{item.assignee}</Content>}
             {item.email && <Content>{item.email}</Content>}
             {item.mobile && <Content>{item.mobile}</Content>}
             {item.state && changeState(item.state)}
             <ButtonBox>
-              {item.role && renderButton(page, item.role, item.userId)}
+              {item.role &&
+                item.userId &&
+                renderButton(page, item.role, item.userId)}
             </ButtonBox>
           </Item>
         ))}
@@ -297,7 +315,59 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     );
   };
 
-  return { list, renderList, renderCategory, changeState, renderButton };
+  const renderOrderList = () => {
+    const orderList = list as OrderItemType[];
+    function renderOrderState(stateNum: number) {
+      switch (stateNum) {
+        case 1:
+          return '편집자 배정 중';
+        case 2:
+          return '영상 검토 중';
+        case 3:
+          return '편집 중';
+        case 4:
+          return '이펙트 추가 중';
+        case 5:
+          return '완료';
+        case 6:
+          return '최종 완료';
+        case 7:
+          return '수정 중';
+        case 8:
+          return '수정 완료';
+        default:
+          return '주문 상태';
+      }
+    }
+    return (
+      <List>
+        {orderList.map((item) => (
+          <Item key={item.orderId}>
+            <Content>{item.orderedAt}</Content>
+            <Content>{`${item.ordererName}${
+              item.ordererChannelName && `(${item.ordererChannelName})`
+            }`}</Content>
+            {item.assigneeName && <Content>{item.assigneeName}</Content>}
+            {item.orderState && (
+              <Content>{renderOrderState(item.orderState)}</Content>
+            )}
+            {role && item.orderId && (
+              <ButtonBox>{renderButton(page, role, item.orderId)}</ButtonBox>
+            )}
+          </Item>
+        ))}
+      </List>
+    );
+  };
+
+  return {
+    list,
+    renderList,
+    renderCategory,
+    changeState,
+    renderButton,
+    renderOrderList,
+  };
 };
 
 export default useList;

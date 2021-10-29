@@ -1,6 +1,8 @@
 class FetchData {
+  baseUrl = 'https://api-ef.stockfolio.ai';
+
   fetchLogin = (values: any) => {
-    return fetch('https://api-ef.stockfolio.ai/sign-in', {
+    return fetch(`${this.baseUrl}/sign-in`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -18,7 +20,7 @@ class FetchData {
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    return fetch('https://api-ef.stockfolio.ai/customer', {
+    return fetch(`${this.baseUrl}/customer`, {
       method: 'POST',
       headers: new Headers(headerDict),
       body: JSON.stringify({
@@ -35,7 +37,7 @@ class FetchData {
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    return fetch('https://api-ef.stockfolio.ai/customer', {
+    return fetch(`${this.baseUrl}/customer`, {
       headers: new Headers(headerDict),
     }).then((res) => res.json());
   };
@@ -46,7 +48,7 @@ class FetchData {
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    return fetch('https://api-ef.stockfolio.ai/order/ready', {
+    return fetch(`${this.baseUrl}/order/ready`, {
       headers: new Headers(headerDict),
     }).then((res) => res.json());
   };
@@ -57,7 +59,7 @@ class FetchData {
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    return fetch('https://api-ef.stockfolio.ai/order/processing', {
+    return fetch(`${this.baseUrl}/order/processing`, {
       headers: new Headers(headerDict),
     }).then((res) => res.json());
   };
@@ -68,7 +70,18 @@ class FetchData {
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    return fetch('https://api-ef.stockfolio.ai/order/done', {
+    return fetch(`${this.baseUrl}/order/done`, {
+      headers: new Headers(headerDict),
+    }).then((res) => res.json());
+  };
+
+  requestOrderDetail = (orderId: string) => {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+    };
+
+    return fetch(`${this.baseUrl}/order/${orderId}`, {
       headers: new Headers(headerDict),
     }).then((res) => res.json());
   };

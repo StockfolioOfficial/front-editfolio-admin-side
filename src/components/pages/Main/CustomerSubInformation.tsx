@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import useReactRouter from 'use-react-router';
 import styled from 'styled-components';
 
-type UserId = {
-  userId: string;
-};
-const CustomerSubInformation = () => {
+interface CustomerSubInformationTpye {
+  customerId: string;
+}
+
+const CustomerSubInformation = ({ customerId }: CustomerSubInformationTpye) => {
   const [subList, setSubList] = useState<any>({});
-  const { match } = useReactRouter<UserId>();
 
   useEffect(() => {
-    const paramsId = match.params.userId;
     const headerDict = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    fetch(`https://api-ef.stockfolio.ai/order/${paramsId}`, {
+    fetch(`https://api-ef.stockfolio.ai/order/${customerId}`, {
       headers: new Headers(headerDict),
     })
       .then((res) => res.json())

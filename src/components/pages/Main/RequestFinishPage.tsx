@@ -7,13 +7,13 @@ import TitleHeader from 'components/TitleHeader/TitleHeader';
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
 
-const MENULIST = ['날짜', '이름', ' 편집자', '상태'];
+const MENULIST = ['날짜', '이름', '상태'];
 
 const RequestFinishPage = () => {
   const handleFetch = new FetchData();
 
-  const { renderCategory, renderList } = useList(
-    'ongoing',
+  const { renderCategory, renderOrderList } = useList(
+    'complete',
     'request',
     handleFetch.requestFinishFetchList,
   );
@@ -27,11 +27,11 @@ const RequestFinishPage = () => {
           <TitleHeader
             title="제작 의뢰 완료"
             placeholder="휴대폰 번호 검색"
-            isSearch
+            // isSearch
           />
 
           {renderCategory(MENULIST)}
-          {renderList()}
+          {renderOrderList()}
         </MainLayout>
       </MainBox>
     </>

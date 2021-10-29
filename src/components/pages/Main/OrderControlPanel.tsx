@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CustomerRequests from './CustomerRequests';
+import { OrderDataType } from './DetailPage';
 import EditsCnt from './EditsCnt';
 import SelectDeliveryDate from './SelectDeliveryDate';
 import SelectEditor from './SelectEditor';
@@ -8,7 +9,12 @@ import SelectOrderData from './SelectOrderData';
 import SelectStatus from './SelectStatus';
 import SelectSubmit from './SelectSubmit';
 
-const SelectLine = () => {
+interface OrderControlPanelProps {
+  data: OrderDataType;
+  page: string;
+}
+
+const OrderControlPanel = ({ data, page }: OrderControlPanelProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newValue = e.currentTarget;
@@ -20,13 +26,16 @@ const SelectLine = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <ControlForm onSubmit={page !== 'complete' ? handleSubmit : undefined}>
         <LineLayout>
           <LineList>
-            <SelectOrderData />
+            <SelectOrderData date={data.orderedAt} />
           </LineList>
           <LineList>
-            <SelectDeliveryDate />
+            <SelectDeliveryDate
+              defaultValue={data.dueDate}
+              fixed={page === 'complete'}
+            />
           </LineList>
           <LineList>
             <SelectEditor />
@@ -34,26 +43,43 @@ const SelectLine = () => {
           <LineList>
             <SelectStatus />
           </LineList>
-          <LineList>
-            <EditsCnt />
-          </LineList>
-          <LineList>
-            <SelectSubmit />
-          </LineList>
+          {page !== 'complete' &&
+            (page === 'edit' ? (
+              <LineList>
+                <EditsCnt />
+              </LineList>
+            ) : (
+              <LineList>
+                <SelectSubmit />
+              </LineList>
+            ))}
         </LineLayout>
         <CustomerRequests />
-      </form>
+      </ControlForm>
     </>
   );
 };
 
+const ControlForm = styled.form`
+  margin-top: 26px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid ${({ theme }) => theme.color.stone};
+`;
+
 const LineLayout = styled.ul`
   display: flex;
+  flex-flow: row wrap;
+  margin: 0 24px 0 8px;
 `;
 
 const LineList = styled.li`
   display: inline-flex;
   flex-direction: column;
+  margin-right: 32px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
-export default SelectLine;
+export default OrderControlPanel;

@@ -4,9 +4,9 @@ import { ReactComponent as SearchIcon } from '../../assets/images/ic_find_24.svg
 import { ReactComponent as DeleteIcon } from '../../assets/images/ic_circle_square_24.svg';
 
 interface headerProps {
-  placeholder: string;
-  isSearch: boolean;
   title: string;
+  isSearch?: boolean;
+  placeholder?: string;
 }
 
 const TitleHeader = ({ title, placeholder, isSearch }: headerProps) => {
@@ -26,11 +26,15 @@ const TitleHeader = ({ title, placeholder, isSearch }: headerProps) => {
   );
 };
 
+TitleHeader.defaultProps = {
+  isSearch: undefined,
+  placeholder: '',
+};
+
 const Container = styled.header`
   display: flex;
   align-items: center;
-  margin-left: 32px;
-  padding: 40px 32px 16px 0;
+  padding: 47px 0 23px;
   border-bottom: 1px solid ${({ theme }) => theme.color.stone};
   max-width: 1280px;
 `;
@@ -40,7 +44,6 @@ const Title = styled.h1`
   font-weight: 700;
   line-height: 1.4166666667;
   letter-spacing: 0.2px;
-  margin-right: 60px;
 `;
 
 const SearchBox = styled.div`
@@ -49,6 +52,7 @@ const SearchBox = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 336px;
+  margin-left: 60px;
   padding: 14px 16px 14px 12px;
   border: 1px solid ${({ theme }) => theme.color.stone};
   border-radius: 6px;

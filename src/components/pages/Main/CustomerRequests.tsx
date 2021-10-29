@@ -11,7 +11,7 @@ const CustomerRequests = () => {
 };
 
 const OrderDateTitle = styled.div`
-  margin: 38px 0 0 40px;
+  margin: 38px 0 0 8px;
   color: #77828b;
   font-size: 13px;
   line-height: 20px;
@@ -19,8 +19,8 @@ const OrderDateTitle = styled.div`
 
 const CutomerRequestBox = styled.div`
   height: 240px;
-  margin: 8px 18px 0 32px;
-  padding: 16px 16px 0 16px;
+  margin-top: 8px;
+  padding: 16px;
   border: 1px solid #eeeeee;
   border-radius: 6px;
   background-color: #ffffff;

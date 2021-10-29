@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useList from 'hooks/useList';
-
 import FetchData from 'service/fetch';
 import TitleHeader from 'components/TitleHeader/TitleHeader';
+import { useHistory, useLocation } from 'react-router';
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
 
@@ -11,12 +11,20 @@ const MENULIST = ['날짜', '고객명(채널명)'];
 
 const RequestProductionPage = () => {
   const handleFetch = new FetchData();
+  const { pathname } = useLocation();
+  const history = useHistory();
 
-  const { renderCategory, renderList } = useList(
+  const { renderCategory, renderOrderList } = useList(
     'request',
     'request',
-    handleFetch.customerFetchList,
+    handleFetch.requestFetchList,
   );
+
+  useEffect(() => {
+    console.log(pathname);
+    if (pathname === '/request-production') return;
+    history.replace('/request-production');
+  }, []);
 
   return (
     <>
@@ -27,11 +35,11 @@ const RequestProductionPage = () => {
           <TitleHeader
             title="제작 의뢰 요청"
             placeholder="휴대폰 번호 검색"
-            isSearch
+            // isSearch
           />
 
           {renderCategory(MENULIST)}
-          {renderList()}
+          {renderOrderList()}
         </MainLayout>
       </MainBox>
     </>

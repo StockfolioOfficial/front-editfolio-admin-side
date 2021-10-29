@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import useList from 'hooks/useList';
 
@@ -12,7 +11,7 @@ const MENULIST = ['날짜', '이름', ' 편집자', '상태'];
 const RequestProductingPage = () => {
   const handleFetch = new FetchData();
 
-  const { renderCategory, renderList } = useList(
+  const { renderCategory, renderOrderList } = useList(
     'ongoing',
     'request',
     handleFetch.requestingFetchList,
@@ -27,11 +26,10 @@ const RequestProductingPage = () => {
           <TitleHeader
             title="제작 의뢰 진행중"
             placeholder="휴대폰 번호 검색"
-            isSearch
+            // isSearch
           />
-
           {renderCategory(MENULIST)}
-          {renderList()}
+          {renderOrderList()}
         </MainLayout>
       </MainBox>
     </>
