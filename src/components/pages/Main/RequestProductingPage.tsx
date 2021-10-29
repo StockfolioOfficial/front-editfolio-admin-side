@@ -13,7 +13,7 @@ const RequestProductingPage = () => {
   const handleFetch = new FetchData();
 
   const { renderCategory, renderList } = useList(
-    'ongoing',
+    'request',
     'request',
     handleFetch.requestingFetchList,
   );
@@ -28,6 +28,9 @@ const RequestProductingPage = () => {
             title="제작 의뢰 진행중"
             placeholder="휴대폰 번호 검색"
             isSearch
+            isButton={false}
+            buttonTitle=""
+            click=""
           />
 
           {renderCategory(MENULIST)}

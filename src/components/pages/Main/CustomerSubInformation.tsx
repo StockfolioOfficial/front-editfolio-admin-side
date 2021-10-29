@@ -1,57 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import useReactRouter from 'use-react-router';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 type UserId = {
   userId: string;
 };
+
 const CustomerSubInformation = () => {
   const [subList, setSubList] = useState<any>({});
-  const { match } = useReactRouter<UserId>();
+  const params = useParams<UserId>();
 
   useEffect(() => {
-    const paramsId = match.params.userId;
     const headerDict = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
     };
 
-    fetch(`https://api-ef.stockfolio.ai/order/${paramsId}`, {
+    fetch(`https://api-ef.stockfolio.ai/customer/${params.userId}`, {
       headers: new Headers(headerDict),
     })
       .then((res) => res.json())
       .then((data) => setSubList(data));
   }, []);
 
-  console.log(subList.orderId);
-
   return (
     <>
       <DirectionLayout>
         <CustomerFirstSubLayout>
           <CustomerInfoTitle>고객명</CustomerInfoTitle>
-          <CustomerLine>김승찬(프론트엔드)</CustomerLine>
+          <CustomerLine>{subList.name}</CustomerLine>
         </CustomerFirstSubLayout>
         <CustomerFirstSubLayout>
           <CustomerInfoTitle>UID</CustomerInfoTitle>
-          <CustomerLine>b733c0ef-d66b-434f-9240-7caa9b08d2e4</CustomerLine>
+          <CustomerLine>{subList.userID}</CustomerLine>
         </CustomerFirstSubLayout>
       </DirectionLayout>
       <DirectionLayout>
         <CustomerFirstSubLayout>
           <CustomerInfoTitle>이메일</CustomerInfoTitle>
-          <CustomerLine>misomiin11@gmail.com</CustomerLine>
+          <CustomerLine>{subList.email}</CustomerLine>
         </CustomerFirstSubLayout>
         <CustomerFirstSubLayout>
           <CustomerInfoTitle>전화번호</CustomerInfoTitle>
-          <CustomerLine>010-1234-5678</CustomerLine>
+          <CustomerLine>{subList.mobile}</CustomerLine>
         </CustomerFirstSubLayout>
       </DirectionLayout>
       <DirectionLayout>
         <CustomerFirstSubLayout>
           <CustomerPersonaTitle>페르소나</CustomerPersonaTitle>
           <CustomerLine href="https://https://stockfolio.notion.site/Stockers-1-657e6a9b069544758d5012ec9d0988e0">
-            https://https://stockfolio.notion.site/Stockers-1-657e6a9b069544758d5012ec9d0988e0
+            {subList.personaLink}
           </CustomerLine>
         </CustomerFirstSubLayout>
       </DirectionLayout>
@@ -59,16 +57,14 @@ const CustomerSubInformation = () => {
         <CustomerFirstSubLayout>
           <CustomerPersonaTitle>OneDrive</CustomerPersonaTitle>
           <CustomerLine href="https://www.microsoft.com/ko-kr/microsoft-365/onedrive/online-cloud-storage">
-            https://www.microsoft.com/ko-kr/microsoft-365/onedrive/online-cloud-storage
+            {subList.onedriveLink}
           </CustomerLine>
         </CustomerFirstSubLayout>
       </DirectionLayout>
       <DirectionLayout>
         <CustomerFirstSubLayout>
           <CustomerPersonaTitle>비고</CustomerPersonaTitle>
-          <CustomerNote>
-            가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사
-          </CustomerNote>
+          <CustomerNote>{subList.memo}</CustomerNote>
         </CustomerFirstSubLayout>
       </DirectionLayout>
     </>

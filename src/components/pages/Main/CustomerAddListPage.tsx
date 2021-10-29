@@ -1,22 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import CustomerAdditional from '../AdminList/CustomerAdditional';
 import Nav from '../Nav/Nav';
 import Aside from '../../Aside/Aside';
-import ProductionInformation from './ProductionInformation';
-import SelectLine from './SelectLine';
-import AdditionalPage from '../AdminList/AdditionalPage';
 
-const Main = () => {
+const CustomerAddListPage = () => {
   return (
     <>
       <Nav />
       <MainBox>
         <Aside />
         <MainLayout>
-          <ProductionInformation />
-          <SelectLine />
-          <AdditionalPage />
+          <CustomerAdditional />
         </MainLayout>
       </MainBox>
     </>
@@ -34,4 +29,4 @@ const MainLayout = styled.div`
   background-color: #fafafa;
 `;
 
-export default Main;
+export default CustomerAddListPage;

@@ -3,18 +3,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useInput from 'hooks/useInputs';
 
-// interface userInfo {
-//   assignee: string;
-//   due_data: string;
-//   end: string;
-//   id: string;
-//   name: string;
-//   orderable_cnt: string;
-//   ordered_at_datetime: string;
-//   start: string;
-//   state: number;
-// }
-
 const CustomerInformationSubmit = () => {
   const { values, handleChange, setValues } = useInput({
     assignee: '',
@@ -42,7 +30,14 @@ const CustomerInformationSubmit = () => {
 
   return (
     <>
-      <TitleHeader title="고객정보" placeholder="" isSearch={false} />
+      <TitleHeader
+        title="고객정보"
+        placeholder=""
+        isSearch={false}
+        isButton={false}
+        buttonTitle=""
+        click=""
+      />
       <CustomerInfoLayout>
         <CustomerDirectLayout>
           <BoxLayout>

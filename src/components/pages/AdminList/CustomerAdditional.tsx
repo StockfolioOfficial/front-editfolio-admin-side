@@ -7,12 +7,11 @@ import TitleHeader from 'components/TitleHeader/TitleHeader';
 import InputForm from '../../InputForm/InputForm';
 import AddButton from '../../Buttons/AddButton';
 
-const AdditionalPage = () => {
+const CustomerAdditional = () => {
   const { values, handleChange, handleSubmit, reset } = useInput({
     name: '',
-    email: '',
-    nickname: '',
-    password: '',
+    id: '',
+    mobile: '',
   });
 
   const { handleError } = useValidate(values);
@@ -20,16 +19,15 @@ const AdditionalPage = () => {
   const fetch = new FetchData();
 
   const addCustom = () => {
-    if (!values.name || !values.email || !values.nickname || !values.password)
-      return;
-    fetch.fetchAdd(values).then((res) => console.log(res));
+    if (!values.name || !values.id || !values.mobile) return;
+    fetch.customerFetchAdd(values).then((res) => console.log(res));
     reset();
   };
 
   return (
     <>
       <TitleHeader
-        title="어드민 추가"
+        title="고객추가"
         placeholder=""
         isSearch={false}
         isButton={false}
@@ -53,31 +51,25 @@ const Margin = styled.div`
   margin-bottom: 100px;
 `;
 
-export default AdditionalPage;
+export default CustomerAdditional;
 
 const INPUTS = [
   {
-    id: 'email',
+    id: 'name',
+    type: 'text',
+    label: '고객명',
+    placeholder: '이름을 입력해주세요.',
+  },
+  {
+    id: 'id',
     type: 'email',
     label: '이메일',
     placeholder: '이메일을 입력해주세요.',
   },
   {
-    id: 'password',
-    type: 'password',
-    label: '비밀번호',
-    placeholder: '비밀번호를 입력해주세요',
-  },
-  {
-    id: 'name',
-    type: 'text',
-    label: '이름',
-    placeholder: '이름를 입력해주세요.',
-  },
-  {
-    id: 'nickname',
-    type: 'text',
-    label: '닉네임',
-    placeholder: '닉네임를 입력해주세요.',
+    id: 'mobile',
+    type: 'tel',
+    label: '전화번호',
+    placeholder: '전화번호를 입력해주세요.',
   },
 ];

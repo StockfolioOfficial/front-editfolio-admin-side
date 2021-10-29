@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { ReactComponent as SearchIcon } from '../../assets/images/ic_find_24.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/images/ic_circle_square_24.svg';
 
@@ -7,9 +8,23 @@ interface headerProps {
   placeholder: string;
   isSearch: boolean;
   title: string;
+  buttonTitle: string;
+  isButton: boolean;
+  click: string;
 }
 
-const TitleHeader = ({ title, placeholder, isSearch }: headerProps) => {
+const TitleHeader = ({
+  title,
+  placeholder,
+  isSearch,
+  buttonTitle,
+  isButton,
+  click,
+}: headerProps) => {
+  const history = useHistory();
+  const changePage = (path: string) => {
+    history.push(path);
+  };
   return (
     <Container>
       <Title>{title}</Title>
@@ -22,6 +37,9 @@ const TitleHeader = ({ title, placeholder, isSearch }: headerProps) => {
           </IconBox>
         </SearchBox>
       )}
+      {isButton && (
+        <AddButton onClick={() => changePage(click)}>{buttonTitle}</AddButton>
+      )}
     </Container>
   );
 };
@@ -33,6 +51,7 @@ const Container = styled.header`
   padding: 40px 32px 16px 0;
   border-bottom: 1px solid ${({ theme }) => theme.color.stone};
   max-width: 1280px;
+  position: relative;
 `;
 
 const Title = styled.h1`
@@ -72,5 +91,17 @@ const SearchSvg = styled(SearchIcon)`
 `;
 
 const DeleteSvg = styled(DeleteIcon)``;
+
+const AddButton = styled.button`
+  width: 100px;
+  height: 32px;
+  position: absolute;
+  right: 77px;
+  font-size: 14px;
+  line-height: 22px;
+  border-radius: 6px;
+  color: white;
+  background-color: #5d4ee8;
+`;
 
 export default TitleHeader;

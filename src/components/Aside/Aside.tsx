@@ -17,11 +17,11 @@ const Aside = () => {
   return (
     <AsideBox>
       <UserManagement>User 관리</UserManagement>
-      <AdminListBox>
+      <AdminListBox onClick={() => changePage('/admin-list')}>
         <AdminIcon />
         <AdminListText>어드민 목록</AdminListText>
       </AdminListBox>
-      <UserListBox onClick={() => changePage('admin-list')}>
+      <UserListBox onClick={() => changePage('/customer-list')}>
         <UserIcon />
         <UserListText>고객 목록</UserListText>
       </UserListBox>

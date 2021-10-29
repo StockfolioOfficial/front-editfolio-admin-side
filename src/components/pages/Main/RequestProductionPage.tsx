@@ -15,7 +15,7 @@ const RequestProductionPage = () => {
   const { renderCategory, renderList } = useList(
     'request',
     'request',
-    handleFetch.customerFetchList,
+    handleFetch.requestingFetchList,
   );
 
   return (
@@ -28,6 +28,9 @@ const RequestProductionPage = () => {
             title="제작 의뢰 요청"
             placeholder="휴대폰 번호 검색"
             isSearch
+            isButton={false}
+            buttonTitle=""
+            click=""
           />
 
           {renderCategory(MENULIST)}

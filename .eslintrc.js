@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-unused-vars': ['error'],
     '@typescript-eslint/no-var-requires': 0,
+    'react/jsx-props-no-spreading': 'off',
   },
   settings: {
     'import/resolver': {

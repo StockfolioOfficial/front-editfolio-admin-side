@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import AdminList from 'components/pages/AdminList/AdminList';
+import CustomerAddListPage from 'components/pages/Main/CustomerAddListPage';
 import RequestProductingPage from 'components/pages/Main/RequestProductingPage';
 import RequestFinishPage from 'components/pages/Main/RequestFinishPage';
 import RequestProductionPage from 'components/pages/Main/RequestProductionPage';
 import Login from 'components/pages/Login/Login';
 import CustomerListPage from 'components/pages/Main/CustomerListPage';
 import DetailPage from 'components/pages/Main/DetailPage';
+import AdminAddpage from 'components/pages/Main/AdminAddpage';
 import Main from './components/pages/Main/Main';
 
 function App(): JSX.Element {
@@ -17,6 +19,7 @@ function App(): JSX.Element {
         <Route exact path="/" component={Main} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/admin-list" component={AdminList} />
+        <Route exact path="/customer-list" component={CustomerListPage} />
         <Route
           exact
           path="/request-production"
@@ -29,7 +32,12 @@ function App(): JSX.Element {
         />
         <Route exact path="/request-finish" component={RequestFinishPage} />
         <Route exact path="/detail/:userId" component={DetailPage} />
-        <Route exact path="/customer-list" component={CustomerListPage} />
+        <Route exact path="/AdminAddPage" component={AdminAddpage} />
+        <Route
+          exact
+          path="/CustomerAddListPage"
+          component={CustomerAddListPage}
+        />
       </Switch>
     </BrowserRouter>
   );

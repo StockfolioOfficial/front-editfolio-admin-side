@@ -33,6 +33,15 @@ interface itemProps {
   mobile?: string;
   name?: string;
   userId?: any;
+  assigneeName: string;
+  assigneeNickname: string;
+  orderId: string;
+  orderStateContent: string;
+  orderedAt: string;
+  ordererChannelLink: string;
+  ordererChannelName: string;
+  ordererName: string;
+  orderState: number;
 }
 
 const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
@@ -50,6 +59,8 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
       ),
     );
   }, []);
+
+  console.log(list);
 
   const changeState = (state: number) => {
     switch (state) {
@@ -155,7 +166,7 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push('/detail')}
+              onClick={() => history.push(`/detail/${userId}`)}
             >
               자세히
             </Button>
@@ -184,7 +195,7 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             <Button
               color="white"
               width="40px"
-              onClick={() => history.push('/cutomer-detail')}
+              onClick={() => history.push(`/cutomer/${userId}`)}
             >
               보기
             </Button>
@@ -253,6 +264,7 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     align-items: center;
     width: 212px;
     margin-bottom: 12px;
+    margin-left: 75px;
     padding: 14px 0;
     font-size: 13px;
     text-align: center;
@@ -287,7 +299,13 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             {item.ch_name && <Content>{item.assignee}</Content>}
             {item.email && <Content>{item.email}</Content>}
             {item.mobile && <Content>{item.mobile}</Content>}
-            {item.state && changeState(item.state)}
+            {item.orderedAt && <Content>{item.orderedAt}</Content>}
+            {item.ordererChannelName && (
+              <Content>{item.ordererChannelName}</Content>
+            )}
+            {item.ordererName && <Content>{item.ordererName}</Content>}
+            {item.assigneeName && <Content>{item.assigneeName}</Content>}
+            {item.orderState && changeState(item.orderState)}
             <ButtonBox>
               {item.role && renderButton(page, item.role, item.userId)}
             </ButtonBox>
