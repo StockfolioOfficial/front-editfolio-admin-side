@@ -1,6 +1,6 @@
 import React from 'react';
 import Category from './Category';
-import UserList from './UserList';
+import UserList from '.';
 
 interface itemProps {
   ordered_at_datetime: string;

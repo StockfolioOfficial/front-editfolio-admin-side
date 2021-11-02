@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Aside from 'components/Aside/Aside';
-import Nav from 'components/pages/Nav/Nav';
+import Nav from 'components/pages/Header';
 // import AdditionalPage from './AdditionalPage';
 import CustomerList from './CustomerList';
 // import CustomerData from './CustomerData';

@@ -5,10 +5,11 @@ import LoginButton from 'components/Buttons/LoginButton';
 import FetchData from 'service/fetch';
 import { useHistory } from 'react-router';
 import { useStores } from 'index';
+import { observer } from 'mobx-react-lite';
 import useInput from '../../../hooks/useInputs';
 import useValidate from '../../../hooks/useValidate';
 
-const Login = () => {
+const Login = observer(() => {
   const history = useHistory();
   const { values, handleChange, handleSubmit, reset } = useInput({
     id: '',
@@ -35,12 +36,13 @@ const Login = () => {
     if (!res) return;
 
     const resData = await getAdminData();
+    console.log(resData);
     if (!resData) return;
     setUser({
       name: resData.name,
       nickname: resData.nickname,
       email: resData.username,
-      id: resData.userId,
+      userId: resData.userId,
     });
     history.push('/');
   };
@@ -63,7 +65,7 @@ const Login = () => {
       </Box>
     </Container>
   );
-};
+});
 
 const Container = styled.div`
   width: 100%;

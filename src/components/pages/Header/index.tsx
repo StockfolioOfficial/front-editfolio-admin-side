@@ -46,7 +46,6 @@ const LogoImg = styled.img`
 const EmailBox = styled.button`
   display: flex;
   align-items: center;
-  width: 166px;
   height: 36px;
   margin: 12px 40px 12px 0;
   border: 1px solid #eeeeee;

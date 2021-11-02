@@ -1,14 +1,14 @@
 import React from 'react';
 import FetchData from 'service/fetch';
 import useList from 'hooks/useList';
-import TitleHeader from '../../TitleHeader/TitleHeader';
+import TitleHeader from '../../TitleHeader';
 
 const CustomerList = () => {
   const fetch = new FetchData();
-  const { renderCategory, renderList } = useList(
+  const { CategoryView, CustomerDataList } = useList(
     'customerList',
     'request',
-    fetch.customerFetchList,
+    fetch.getCustomerList,
   );
 
   return (
@@ -18,8 +18,8 @@ const CustomerList = () => {
         placeholder="이메일, 고객명, 닉네임, 전화번호 검색"
         isSearch
       />
-      {renderCategory(CATEGORY)}
-      {renderList()}
+      <CategoryView category={CATEGORY} />
+      <CustomerDataList />
     </>
   );
 };

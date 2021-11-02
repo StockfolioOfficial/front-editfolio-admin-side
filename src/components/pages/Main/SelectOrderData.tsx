@@ -2,11 +2,12 @@ import React from 'react';
 import OrderControlItem from './OrderControlItem';
 
 interface OrderDataProps {
-  date: string;
+  title: string;
+  data: string;
 }
 
-const SelectOrderData = ({ date }: OrderDataProps) => {
-  return <OrderControlItem title="주문 일시" content={date} />;
+const SelectOrderData = ({ title, data }: OrderDataProps) => {
+  return <OrderControlItem title={title} content={data} />;
 };
 
 export default SelectOrderData;

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import useList from 'hooks/useList';
 
 import FetchData from 'service/fetch';
-import TitleHeader from 'components/TitleHeader/TitleHeader';
-import Nav from '../Nav/Nav';
+import TitleHeader from 'components/TitleHeader';
+import Nav from '../Header';
 import Aside from '../../Aside/Aside';
 
 const MENULIST = ['날짜', '이름', ' 편집자', '전화번호'];
@@ -12,10 +12,10 @@ const MENULIST = ['날짜', '이름', ' 편집자', '전화번호'];
 const CustomerListPage = () => {
   const fetch = new FetchData();
 
-  const { renderCategory, renderList } = useList(
+  const { CategoryView, CustomerDataList } = useList(
     'customerList',
     'request',
-    fetch.customerFetchList,
+    fetch.getCustomerList,
   );
 
   return (
@@ -29,9 +29,8 @@ const CustomerListPage = () => {
             placeholder="휴대폰 번호 검색"
             isSearch
           />
-
-          {renderCategory(MENULIST)}
-          {renderList()}
+          <CategoryView category={MENULIST} />
+          <CustomerDataList />
         </MainLayout>
       </MainBox>
     </>

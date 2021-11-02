@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
-import FetchData from 'service/fetch';
-import TitleHeader from 'components/TitleHeader/TitleHeader';
-import Nav from '../Nav/Nav';
+import OrderFetchData from 'service/fetchOrder';
+import TitleHeader from 'components/TitleHeader';
+import Header from '../Header';
 import Aside from '../../Aside/Aside';
 import ProductionInformation from './ProductionInformation';
 import OrderControlPanel from './OrderControlPanel';
-import CustomerInformation from './CustomerInformation';
+// import CustomerInformation from './CustomerInformation';
 
 interface AssigneeType {
   assignee: string;
@@ -31,19 +31,17 @@ const DetailPage = () => {
   const [orderData, setOrderData] = useState<OrderDataType>({
     orderId: '',
     orderState: 0,
-    orderStateContent: '주문상태',
+    orderStateContent: '대기',
     orderedAt: '',
     remainingEditCount: 0,
     orderer: '',
   });
   const param = useParams<{ id: string; page: string }>();
-  const handleFetch = new FetchData();
+  const { getOrderDetail } = new OrderFetchData();
 
   async function setOrderDetail() {
     try {
-      const res = (await handleFetch.requestOrderDetail(
-        param.id,
-      )) as OrderDataType;
+      const res = (await getOrderDetail(param.id)) as OrderDataType;
       setOrderData(res);
     } catch {
       console.error('주문정보를 가져오지 못했습니다.');
@@ -53,16 +51,17 @@ const DetailPage = () => {
   useEffect(() => {
     setOrderDetail();
   }, [param.id]);
+
   return (
     <>
-      <Nav />
+      <Header />
       <MainBox>
         <Aside />
         <MainLayout>
           <TitleHeader title="제작 의뢰 완료" />
           <ProductionInformation orderId={orderData.orderId} />
           <OrderControlPanel page={param.page} data={orderData} />
-          <CustomerInformation customerId={orderData.orderer} isRequest />
+          {/* <CustomerInformation customerId={orderData.orderer} isRequest /> */}
         </MainLayout>
       </MainBox>
     </>

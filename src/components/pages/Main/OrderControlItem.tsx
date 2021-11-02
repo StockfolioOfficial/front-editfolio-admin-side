@@ -1,58 +1,73 @@
-import { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as ArrowSvg } from '../../../assets/styles/arrowPurple.svg';
 
-interface OptionType {
-  name: string;
-  nickname: string;
-  userId: string;
+export interface OptionType {
+  text: string;
+  value: string;
 }
 
-interface OrderControlItem {
+interface OrderControlItemProps {
   title: string;
   content?: string;
   type?: 'selectBox' | 'calendar' | 'editButton';
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> &
     React.RefAttributes<HTMLInputElement>;
+  options?: OptionType[];
 }
-
-const DROPMENU = [
-  { userId: '1', name: '김승찬', nickname: '김' },
-  { userId: '2', name: '주철진', nickname: '주' },
-  { userId: '3', name: '송치헌', nickname: '송' },
-  { userId: '4', name: '성우진', nickname: '성' },
-  { userId: '5', name: '김정수', nickname: '김' },
-];
-
-const STETUS = [
-  { id: 1, content: '영상검토중' },
-  { id: 2, content: '편집자 배정 중' },
-  { id: 3, content: '편집 중' },
-  { id: 4, content: '이펙트 추가 중' },
-  { id: 5, content: '수정 중' },
-  { id: 6, content: '완료' },
-];
 
 const OrderControlItem = ({
   title,
   type,
   content,
   inputProps,
-}: OrderControlItem) => {
-  const [options, setOptions] = useState<OptionType[]>([]);
+  options = [],
+}: OrderControlItemProps) => {
+  const { onFocus, ref, ...rest } = inputProps || {};
+  const [open, setOpen] = useState<boolean>(false);
+  const inputRef = (ref ||
+    useRef<HTMLInputElement | null>(
+      null,
+    )) as React.MutableRefObject<HTMLInputElement | null>;
+
+  function selectOption(value: string) {
+    if (!inputRef.current) return;
+    inputRef.current.value = value;
+    if (open) setOpen(false);
+  }
+
+  function onFocusIn(e: React.FocusEvent<HTMLInputElement>) {
+    if (!open) setOpen(true);
+    if (onFocus) onFocus(e);
+  }
 
   function renderContent() {
     switch (type) {
       case 'selectBox':
         return (
-          <OrderInputBox active>
-            <OrderSelectInput type="text" {...inputProps} />
-            <ArrowSvg />
+          <OrderInputBox active={open}>
+            <OrderSelectInput
+              type="text"
+              defaultValue="-"
+              onFocus={(e) => onFocusIn(e)}
+              ref={inputRef}
+              {...rest}
+            />
             {options.length > 0 && (
+              <button type="button" onClick={() => setOpen(!open)}>
+                <ArrowSvg />
+              </button>
+            )}
+            {options.length > 0 && open && (
               <OrderOptions>
                 {options.map((option) => (
-                  <li key={`selectBox-${option.name}`}>
-                    <button type="button">{option.name}</button>
+                  <li key={`selectBox-${inputProps?.id || ''}-${option.text}`}>
+                    <button
+                      type="button"
+                      onClick={() => selectOption(option.value)}
+                    >
+                      {option.text}
+                    </button>
                   </li>
                 ))}
               </OrderOptions>
@@ -70,25 +85,6 @@ const OrderControlItem = ({
     }
   }
 
-  useEffect(() => {
-    let resOption: OptionType[] = [];
-    switch (title) {
-      case '상태':
-        resOption = STETUS.map((stetus) => ({
-          userId: `${stetus.id}`,
-          name: stetus.content,
-          nickname: stetus.content,
-        }));
-        break;
-      case '담당 편집자':
-        resOption = DROPMENU;
-        break;
-      default:
-        resOption = [];
-    }
-    setOptions(resOption);
-  }, []);
-
   return (
     <>
       <OrderTitle>{title}</OrderTitle>
@@ -101,6 +97,7 @@ OrderControlItem.defaultProps = {
   content: '',
   type: undefined,
   inputProps: undefined,
+  options: [],
 };
 
 const OrderTitle = styled.div`
@@ -134,18 +131,29 @@ const OrderSelectInput = styled.input`
   background-color: #ffffff;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   z-index: 1;
+
+  &:disabled {
+    cursor: default;
+    box-shadow: none;
+    background-color: ${({ theme }) => theme.color.stone};
+  }
   /* &::-webkit-calendar-picker-indicator {
   } */
 `;
 
 const OrderInputBox = styled(OrderContentBox)<{ active: boolean }>`
-  > svg {
+  > button {
+    display: flex;
+    align-items: center;
     position: absolute;
     top: 50%;
-    right: 19px;
+    right: 7px;
+    padding: 8px 7px;
+    cursor: pointer;
     z-index: 1;
     transform: translateY(-50%)
       ${({ active }) => (active ? 'rotate(180deg)' : 'rotate(0)')};
+    transition: transform 0.1s;
   }
 `;
 

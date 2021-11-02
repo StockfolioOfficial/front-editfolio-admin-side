@@ -1,5 +1,5 @@
 import React from 'react';
-import TitleHeader from '../../TitleHeader/TitleHeader';
+import TitleHeader from '../../TitleHeader';
 import CustomerInformation from '../Main/CustomerInformation';
 
 const CustomerData = () => {

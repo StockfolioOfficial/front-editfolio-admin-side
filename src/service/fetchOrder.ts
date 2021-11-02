@@ -1,4 +1,4 @@
-interface OrderModal {
+export interface OrderModal {
   orderId: string;
   orderedAt: string;
   ordererChannelLink: string;
@@ -10,7 +10,7 @@ interface OrderModal {
   orderStateContent?: string;
 }
 
-interface OrderDataModal {
+export interface OrderDataModal {
   assignee: {
     assignee: string;
     assigneeName: string;
@@ -26,7 +26,7 @@ interface OrderDataModal {
   requirement: string;
 }
 
-interface OrderStateModal {
+export interface OrderStateModal {
   id: number;
   content: string;
 }
@@ -49,7 +49,11 @@ class OrderFetchData {
     try {
       const resList = await fetch(`${this.baseUrl}/order/ready`, {
         headers: new Headers(headerDict),
-      }).then<OrderModal[]>((res) => res.json());
+      }).then<OrderModal[]>((res) => {
+        if (res.status === 200) return res.json();
+        if (res.status === 204) return [];
+        throw Error(`${res.status}`);
+      });
       return resList;
     } catch {
       console.error('리스트를 가져오지 못했습니다.');
@@ -131,20 +135,20 @@ class OrderFetchData {
     }
 
     const headerDict: HeadersInit = {
-      method: 'PUT',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     };
 
     try {
       await fetch(`${this.baseUrl}/order/${orderData.orderId}`, {
+        method: 'PUT',
         headers: new Headers(headerDict),
         body: JSON.stringify({
           assignee: orderData.assignee,
-          dueDate: orderData.dueDate,
+          dueDate: `${orderData.dueDate}T00:00:00+00:00`,
           orderState: orderData.orderState,
         }),
-      }).then<Pick<OrderDataModal, 'orderId'>>((res) => res.json());
+      }).then((res) => console.log(res));
       return true;
     } catch {
       console.error('주문 정보를 저장할 수 없습니다.');

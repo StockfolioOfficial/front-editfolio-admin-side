@@ -3,43 +3,48 @@ import { makeAutoObservable } from 'mobx';
 interface UserModal {
   name: string;
   nickname: string;
-  id: string;
+  userId: string;
   email: string;
 }
 
 export const initUser: UserModal = {
   name: '',
   nickname: '',
-  id: '',
+  userId: '',
   email: '',
 };
 
 class User {
-  name = initUser.name;
+  name;
 
-  nickname = initUser.nickname;
+  nickname;
 
-  id = initUser.id;
+  userId;
 
-  email = initUser.email;
+  email;
 
   constructor() {
     makeAutoObservable(this);
+    this.name = initUser.name;
+    this.nickname = initUser.nickname;
+    this.userId = initUser.userId;
+    this.email = initUser.email;
   }
 
-  setUser(data: Partial<UserModal>) {
-    if (data.id) this.id = data.id;
+  setUser = (data: Partial<UserModal>) => {
+    if (data.userId) this.userId = data.userId;
     if (data.name) this.name = data.name;
     if (data.nickname) this.nickname = data.nickname;
     if (data.email) this.email = data.email;
-  }
+  };
 
-  resetUser() {
-    this.id = initUser.id;
+  resetUser = () => {
+    console.log(this);
+    this.userId = initUser.userId;
     this.name = initUser.name;
     this.nickname = initUser.nickname;
     this.email = initUser.email;
-  }
+  };
 }
 
 export default User;

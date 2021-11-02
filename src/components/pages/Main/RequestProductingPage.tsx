@@ -1,20 +1,19 @@
 import styled from 'styled-components';
 import useList from 'hooks/useList';
-
-import FetchData from 'service/fetch';
-import TitleHeader from 'components/TitleHeader/TitleHeader';
-import Nav from '../Nav/Nav';
+import TitleHeader from 'components/TitleHeader';
+import OrderFetchData from 'service/fetchOrder';
+import Nav from '../Header';
 import Aside from '../../Aside/Aside';
 
 const MENULIST = ['날짜', '이름', ' 편집자', '상태'];
 
 const RequestProductingPage = () => {
-  const handleFetch = new FetchData();
+  const { getReguestingOrderList } = new OrderFetchData();
 
-  const { renderCategory, renderOrderList } = useList(
+  const { CategoryView, OrderList } = useList(
     'ongoing',
     'request',
-    handleFetch.requestingFetchList,
+    getReguestingOrderList,
   );
 
   return (
@@ -28,8 +27,8 @@ const RequestProductingPage = () => {
             placeholder="휴대폰 번호 검색"
             // isSearch
           />
-          {renderCategory(MENULIST)}
-          {renderOrderList()}
+          <CategoryView category={MENULIST} />
+          <OrderList />
         </MainLayout>
       </MainBox>
     </>

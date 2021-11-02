@@ -3,24 +3,25 @@ import styled from 'styled-components';
 import useInput from 'hooks/useInputs';
 import useValidate from 'hooks/useValidate';
 import FetchData from 'service/fetch';
-import TitleHeader from 'components/TitleHeader/TitleHeader';
+import TitleHeader from 'components/TitleHeader';
 import InputForm from '../../InputForm/InputForm';
 import AddButton from '../../Buttons/AddButton';
 
 const AdditionalPage = () => {
   const { values, handleChange, handleSubmit, reset } = useInput({
     name: '',
-    id: '',
+    email: '',
     mobile: '',
   });
-
-  const { handleError } = useValidate(values);
-
-  const fetch = new FetchData();
+  const { handleError } = useValidate({
+    id: values.email,
+    password: values.mobile,
+  });
+  const { createCustomer } = new FetchData();
 
   const addCustom = () => {
-    if (!values.name || !values.id || !values.mobile) return;
-    fetch.fetchAdd(values).then((res) => console.log(res));
+    if (!values.name || !values.email || !values.mobile) return;
+    createCustomer(values).then((res) => console.log(res));
     reset();
   };
 

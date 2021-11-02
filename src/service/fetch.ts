@@ -1,3 +1,5 @@
+import { CreatorModal } from 'contexts/adminStore';
+
 interface LoginModal {
   username: string;
   password: string;
@@ -5,6 +7,13 @@ interface LoginModal {
 
 interface TokenModal {
   token: string;
+}
+
+interface UserModal {
+  name: string;
+  nickname: string;
+  userId: string;
+  username: string;
 }
 
 interface CustomerModal {
@@ -41,7 +50,7 @@ class FetchData {
     const token = localStorage.getItem('editfolio-admin-token');
     if (!token) {
       console.error('토큰이 없습니다.');
-      return false;
+      return;
     }
 
     const headerDict: HeadersInit = {
@@ -50,12 +59,12 @@ class FetchData {
     };
 
     try {
-      await fetch(`${this.baseUrl}/admin/me`, {
+      const res = await fetch(`${this.baseUrl}/admin/me`, {
         headers: new Headers(headerDict),
-      });
-      return true;
+      }).then<UserModal>((res) => res.json());
+      return res;
     } catch {
-      return false;
+      console.error('정보를 가져올 수 없습니다.');
     }
   };
 
@@ -100,6 +109,26 @@ class FetchData {
     return fetch(`${this.baseUrl}/customer`, {
       headers: new Headers(headerDict),
     }).then((res) => res.json());
+  };
+
+  getCreatorList = async () => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return;
+    }
+
+    const headerDict: HeadersInit = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${
+        localStorage.getItem('editfolio-admin-token') as string
+      }`,
+    };
+
+    const res = await fetch(`${this.baseUrl}/admin/creator`, {
+      headers: headerDict,
+    }).then<CreatorModal[]>((res) => res.json());
+    return res;
   };
 }
 

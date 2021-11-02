@@ -49,19 +49,25 @@ interface OrderItemType {
 
 const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
   const [list, setList] = useState<itemProps[] | OrderItemType[]>([]);
-  useEffect(() => {
-    console.log(fetch);
+
+  async function setListFetch() {
     if (!fetch) return;
-    fetch().then((res: (itemProps[] | OrderItemType[])[]) =>
-      setList(
-        role
-          ? res.map((data: any) => ({
-              ...data,
-              role,
-            }))
-          : res,
-      ),
+    const res = await fetch();
+    if (!res) return;
+    if (res?.errorCode) return;
+    console.log(res);
+    setList(
+      role
+        ? res.map((data: any) => ({
+            ...data,
+            role,
+          }))
+        : res,
     );
+  }
+
+  useEffect(() => {
+    setListFetch();
   }, []);
 
   const changeState = (state: number) => {
@@ -208,7 +214,7 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
   const CategoryList = styled.ul`
     display: flex;
     max-width: 1200px;
-    margin: 16px 0 24px 32px;
+    margin: 16px 0 24px;
     border-bottom: 1px solid ${({ theme }) => theme.color.paleBlue};
   `;
 
@@ -221,7 +227,11 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     text-align: center;
   `;
 
-  const renderCategory = (category: string[]) => {
+  interface CategoryViewProps {
+    category: string[];
+  }
+
+  const CategoryView = ({ category }: CategoryViewProps) => {
     return (
       <CategoryList>
         {category.map((item) => (
@@ -240,7 +250,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
   const Item = styled.li`
     display: flex;
     align-items: center;
-    margin-left: 32px;
     padding-right: 40px;
     position: relative;
     border-radius: 6px;
@@ -286,7 +295,7 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     margin-left: auto;
   `;
 
-  const renderList = () => {
+  const CustomerDataList = () => {
     const viewList = list as itemProps[];
     return (
       <List>
@@ -315,7 +324,7 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     );
   };
 
-  const renderOrderList = () => {
+  const OrderList = () => {
     const orderList = list as OrderItemType[];
     function renderOrderState(stateNum: number) {
       switch (stateNum) {
@@ -362,11 +371,11 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
 
   return {
     list,
-    renderList,
-    renderCategory,
+    CustomerDataList,
+    CategoryView,
     changeState,
     renderButton,
-    renderOrderList,
+    OrderList,
   };
 };
 

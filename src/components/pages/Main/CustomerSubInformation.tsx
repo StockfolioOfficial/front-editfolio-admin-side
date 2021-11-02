@@ -11,7 +11,9 @@ const CustomerSubInformation = ({ customerId }: CustomerSubInformationTpye) => {
   useEffect(() => {
     const headerDict = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('edit-token') as string}`,
+      Authorization: `Bearer ${
+        localStorage.getItem('editfolio-admin-token') as string
+      }`,
     };
 
     fetch(`https://api-ef.stockfolio.ai/order/${customerId}`, {

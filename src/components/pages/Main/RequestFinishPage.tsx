@@ -1,21 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import useList from 'hooks/useList';
-
-import FetchData from 'service/fetch';
-import TitleHeader from 'components/TitleHeader/TitleHeader';
-import Nav from '../Nav/Nav';
+import OrderFetchData from 'service/fetchOrder';
+import TitleHeader from 'components/TitleHeader';
+import Nav from '../Header';
 import Aside from '../../Aside/Aside';
 
 const MENULIST = ['날짜', '이름', '상태'];
 
 const RequestFinishPage = () => {
-  const handleFetch = new FetchData();
+  const { getFinishOrderList } = new OrderFetchData();
 
-  const { renderCategory, renderOrderList } = useList(
+  const { CategoryView, OrderList } = useList(
     'complete',
     'request',
-    handleFetch.requestFinishFetchList,
+    getFinishOrderList,
   );
 
   return (
@@ -30,8 +29,8 @@ const RequestFinishPage = () => {
             // isSearch
           />
 
-          {renderCategory(MENULIST)}
-          {renderOrderList()}
+          <CategoryView category={MENULIST} />
+          <OrderList />
         </MainLayout>
       </MainBox>
     </>

@@ -1,4 +1,4 @@
-import TitleHeader from 'components/TitleHeader/TitleHeader';
+import TitleHeader from 'components/TitleHeader';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useInput from 'hooks/useInputs';
