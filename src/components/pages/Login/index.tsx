@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import InputForm from 'components/InputForm/InputForm';
 import LoginButton from 'components/Buttons/LoginButton';
 import FetchData from 'service/fetch';
+import { useHistory } from 'react-router';
+import { useStores } from 'index';
 import useInput from '../../../hooks/useInputs';
 import useValidate from '../../../hooks/useValidate';
 
 const Login = () => {
+  const history = useHistory();
   const { values, handleChange, handleSubmit, reset } = useInput({
     id: '',
     password: '',
@@ -14,18 +17,32 @@ const Login = () => {
 
   const { isValid, error, handleError } = useValidate(values);
 
-  const fetch = new FetchData();
+  const { login, getAdminData } = new FetchData();
 
-  const submitData = () => {
+  const { userStore } = useStores();
+  const { setUser } = userStore;
+
+  const submitData = async () => {
     if (!isValid) {
       reset();
       return;
     }
-    fetch
-      .fetchLogin(values)
-      .then(
-        (res) => res.token && localStorage.setItem('edit-token', res.token),
-      );
+    const res = await login({
+      username: values.id,
+      password: values.password,
+    });
+
+    if (!res) return;
+
+    const resData = await getAdminData();
+    if (!resData) return;
+    setUser({
+      name: resData.name,
+      nickname: resData.nickname,
+      email: resData.username,
+      id: resData.userId,
+    });
+    history.push('/');
   };
 
   return (

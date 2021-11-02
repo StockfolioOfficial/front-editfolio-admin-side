@@ -1,23 +1,36 @@
+import { useStores } from 'index';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { useHistory } from 'react-router';
+import FetchData from 'service/fetch';
 import styled from 'styled-components';
 import { ReactComponent as UnderArrow } from '../../../assets/styles/arrow.svg';
 // import { ReactComponent as ArrowPurpleIcon } from '../../../assets/styles/arrowPurple.svg';
 
-const Nav = () => {
-  return (
-    <>
-      <NavBox>
-        <LogoImg src="/images/Logo.png" />
-        <EmailBox>
-          <Email>jlee@stockfolio.ai</Email>
-          <UnderArrow />
-        </EmailBox>
-      </NavBox>
-    </>
-  );
-};
+const Header = observer(() => {
+  const history = useHistory();
+  const { logout } = new FetchData();
+  const { userStore } = useStores();
+  const { email, resetUser } = userStore;
 
-const NavBox = styled.nav`
+  function logoutUser() {
+    logout();
+    resetUser();
+    history.push('/login');
+  }
+
+  return (
+    <Root>
+      <LogoImg src="/images/Logo.png" />
+      <EmailBox type="button" onClick={() => logoutUser()}>
+        <Email>{email}</Email>
+        <UnderArrow />
+      </EmailBox>
+    </Root>
+  );
+});
+
+const Root = styled.header`
   display: flex;
   justify-content: space-between;
   height: 60px;
@@ -30,7 +43,7 @@ const LogoImg = styled.img`
   margin: 12px 0 16px 32px;
 `;
 
-const EmailBox = styled.div`
+const EmailBox = styled.button`
   display: flex;
   align-items: center;
   width: 166px;
@@ -45,4 +58,4 @@ const Email = styled.div`
   margin: 8px 11px 8px 12px;
 `;
 
-export default Nav;
+export default Header;
