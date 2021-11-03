@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import OrderFetchData, { OrderListModel } from 'service/fetchOrder';
 import styled from 'styled-components';
 
 interface colorProps {
@@ -16,54 +17,15 @@ interface colorProps {
   fontColor?: string;
 }
 
-interface itemProps {
-  assignee?: string;
-  state?: number;
-  orderable_cnt?: string;
-  start?: string;
-  end?: string;
-  due_data?: string;
-  ch_name?: string;
-  nickname?: string;
-  role?: string;
-  channelLink?: string;
-  channelName?: string;
-  createdAt?: string;
-  email?: string;
-  mobile?: string;
-  name?: string;
-  userId?: string;
-}
-
-interface OrderItemType {
-  orderId: string;
-  orderedAt: string;
-  ordererChannelLink: string;
-  ordererChannelName: string;
-  ordererName: string;
-  orderState?: number;
-  orderStateContent?: string;
-  assigneeName?: string;
-  assigneeNickname?: string;
-}
-
-const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
-  const [list, setList] = useState<itemProps[] | OrderItemType[]>([]);
+const useList = (page: string, fetch?: () => Promise<any>) => {
+  const [list, setList] = useState<OrderListModel[]>([]);
 
   async function setListFetch() {
     if (!fetch) return;
     const res = await fetch();
     if (!res) return;
     if (res?.errorCode) return;
-    console.log(res);
-    setList(
-      role
-        ? res.map((data: any) => ({
-            ...data,
-            role,
-          }))
-        : res,
-    );
+    setList(res);
   }
 
   useEffect(() => {
@@ -79,8 +41,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             영상 검토 중
           </State>
         );
-        break;
-
       case 2:
         return (
           <State>
@@ -88,8 +48,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             편집자 배정 중
           </State>
         );
-        break;
-
       case 3:
         return (
           <State>
@@ -97,8 +55,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             편집 중
           </State>
         );
-        break;
-
       case 4:
         return (
           <State>
@@ -106,8 +62,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             이펙트 추가 중
           </State>
         );
-        break;
-
       case 5:
         return (
           <State>
@@ -115,8 +69,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             수정 중
           </State>
         );
-        break;
-
       case 6:
         return (
           <State>
@@ -124,73 +76,65 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             완료
           </State>
         );
-        break;
-
       default:
         return undefined;
-        break;
     }
   };
 
-  const Button = styled.button<colorProps>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: ${(props) => props.width};
-    height: 32px;
-    background-color: ${({ theme, color }) => theme.color[color]};
-    color: ${(props) => props.fontColor};
-    border-radius: 6px;
-    font-size: 13px;
-    line-height: 1.5384615385;
-    border: 1px solid gray;
-  `;
-
-  const renderButton = (page: string, role: string, userId: string) => {
+  const renderButton = (id?: string) => {
     const history = useHistory();
+    const { takeMeOrder } = new OrderFetchData();
     switch (page) {
       case 'request':
         return (
           <>
-            <Button color="purple" width="84px" fontColor="white">
+            <Button
+              color="purple"
+              width="84px"
+              fontColor="white"
+              onClick={() =>
+                id &&
+                takeMeOrder(id).then(() =>
+                  history.push(`/detail/ongoing/${id}`),
+                )
+              }
+            >
               가져가기
             </Button>
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push(`/detail/${page}/${userId}`)}
+              onClick={() => history.push(`/detail/${page}/${id}`)}
             >
               자세히
             </Button>
           </>
         );
       case 'ongoing':
+      case 'edit':
       case 'complete':
         return (
           <>
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push(`/detail/${page}/${userId}`)}
+              onClick={() => history.push(`/detail/${page}/${id}`)}
             >
               자세히
             </Button>
           </>
         );
       case 'adminList':
-        if (role === 'super_admin') {
-          return (
-            <>
-              <Button color="purple" width="40px" fontColor="white">
-                수정
-              </Button>
-              <Button color="red" width="40px" fontColor="white">
-                삭제
-              </Button>
-            </>
-          );
-        }
-        return undefined;
+        return (
+          <>
+            <Button color="purple" width="40px" fontColor="white">
+              수정
+            </Button>
+            <Button color="red" width="40px" fontColor="white">
+              삭제
+            </Button>
+          </>
+        );
       case 'customerList':
         return (
           <>
@@ -211,22 +155,6 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     }
   };
 
-  const CategoryList = styled.ul`
-    display: flex;
-    max-width: 1200px;
-    margin: 16px 0 24px;
-    border-bottom: 1px solid ${({ theme }) => theme.color.paleBlue};
-  `;
-
-  const CategoryItem = styled.li`
-    width: 212px;
-    padding: 14px 0;
-    font-size: 13px;
-    line-height: 1.5384615385;
-    color: ${({ theme }) => theme.color.gray};
-    text-align: center;
-  `;
-
   interface CategoryViewProps {
     category: string[];
   }
@@ -241,91 +169,8 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     );
   };
 
-  const List = styled.ul`
-    > li:not(:last-child) {
-      margin-bottom: 12px;
-    }
-  `;
-
-  const Item = styled.li`
-    display: flex;
-    align-items: center;
-    padding-right: 40px;
-    position: relative;
-    border-radius: 6px;
-
-    & span {
-      width: 212px;
-      padding: 14px 0;
-      text-align: center;
-      color: ${({ theme }) => theme.color.black};
-    }
-
-    &:hover {
-      background-color: ${({ theme }) => theme.color.stone};
-    }
-  `;
-
-  const Content = styled.span`
-    font-size: 13px;
-  `;
-
-  const State = styled.div`
-    display: flex;
-    align-items: center;
-    width: 212px;
-    margin-bottom: 12px;
-    padding: 14px 0;
-    font-size: 13px;
-    text-align: center;
-  `;
-
-  const Circle = styled.div<colorProps>`
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
-    border-radius: 50%;
-    background-color: ${({ theme, color }) => theme.color[color]};
-  `;
-
-  const ButtonBox = styled.div`
-    display: inline-flex;
-    align-items: center;
-    gap: 24px;
-    margin-left: auto;
-  `;
-
-  const CustomerDataList = () => {
-    const viewList = list as itemProps[];
-    return (
-      <List>
-        {viewList.map((item) => (
-          <Item key={item.name}>
-            {item.createdAt && <Content>{item.createdAt}</Content>}
-            {item.name && (
-              <Content>
-                {item.name}
-                {item.channelName && `(${item.channelName})`}
-              </Content>
-            )}
-            {item.nickname && <Content>{item.nickname}</Content>}
-            {item.ch_name && <Content>{item.assignee}</Content>}
-            {item.email && <Content>{item.email}</Content>}
-            {item.mobile && <Content>{item.mobile}</Content>}
-            {item.state && changeState(item.state)}
-            <ButtonBox>
-              {item.role &&
-                item.userId &&
-                renderButton(page, item.role, item.userId)}
-            </ButtonBox>
-          </Item>
-        ))}
-      </List>
-    );
-  };
-
   const OrderList = () => {
-    const orderList = list as OrderItemType[];
+    const orderList = list as OrderListModel[];
     function renderOrderState(stateNum: number) {
       switch (stateNum) {
         case 1:
@@ -352,7 +197,9 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
       <List>
         {orderList.map((item) => (
           <Item key={item.orderId}>
-            <Content>{item.orderedAt}</Content>
+            <Content>
+              {item.orderedAt.split('T').join(' • ').split('.')[0]}
+            </Content>
             <Content>{`${item.ordererName}${
               item.ordererChannelName && `(${item.ordererChannelName})`
             }`}</Content>
@@ -360,8 +207,8 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
             {item.orderState && (
               <Content>{renderOrderState(item.orderState)}</Content>
             )}
-            {role && item.orderId && (
-              <ButtonBox>{renderButton(page, role, item.orderId)}</ButtonBox>
+            {item.orderId && (
+              <ButtonBox>{renderButton(item.orderId)}</ButtonBox>
             )}
           </Item>
         ))}
@@ -369,14 +216,125 @@ const useList = (page: string, role?: string, fetch?: () => Promise<any>) => {
     );
   };
 
+  // const CustomerDataList = () => {
+  //   const viewList = list as OrderListModel[];
+  //   return (
+  //     <List>
+  //       {viewList.map((item) => (
+  //         <Item key={item.name}>
+  //           {item.createdAt && <Content>{item.createdAt}</Content>}
+  //           {item.name && (
+  //             <Content>
+  //               {item.name}
+  //               {item.channelName && `(${item.channelName})`}
+  //             </Content>
+  //           )}
+  //           {item.nickname && <Content>{item.nickname}</Content>}
+  //           {item.ch_name && <Content>{item.assignee}</Content>}
+  //           {item.email && <Content>{item.email}</Content>}
+  //           {item.mobile && <Content>{item.mobile}</Content>}
+  //           {item.state && changeState(item.state)}
+  //           <ButtonBox>
+  //             {item.userId && renderButton(page, item.userId)}
+  //           </ButtonBox>
+  //         </Item>
+  //       ))}
+  //     </List>
+  //   );
+  // };
+
   return {
     list,
-    CustomerDataList,
     CategoryView,
     changeState,
     renderButton,
     OrderList,
+    // CustomerDataList,
   };
 };
+
+const List = styled.ul`
+  > li:not(:last-child) {
+    margin-bottom: 12px;
+  }
+`;
+
+const Item = styled.li`
+  display: flex;
+  align-items: center;
+  padding-right: 40px;
+  position: relative;
+  border-radius: 6px;
+
+  & span {
+    width: 212px;
+    padding: 14px 0;
+    text-align: center;
+    color: ${({ theme }) => theme.color.black};
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.stone};
+  }
+`;
+
+const Content = styled.span`
+  font-size: 13px;
+`;
+
+const State = styled.div`
+  display: flex;
+  align-items: center;
+  width: 212px;
+  margin-bottom: 12px;
+  padding: 14px 0;
+  font-size: 13px;
+  text-align: center;
+`;
+
+const Circle = styled.div<colorProps>`
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background-color: ${({ theme, color }) => theme.color[color]};
+`;
+
+const ButtonBox = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+`;
+
+const CategoryList = styled.ul`
+  display: flex;
+  max-width: 1200px;
+  margin: 16px 0 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.color.paleBlue};
+`;
+
+const CategoryItem = styled.li`
+  width: 212px;
+  padding: 14px 0;
+  font-size: 13px;
+  line-height: 1.5384615385;
+  color: ${({ theme }) => theme.color.gray};
+  text-align: center;
+`;
+
+const Button = styled.button<colorProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${(props) => props.width};
+  height: 32px;
+  background-color: ${({ theme, color }) => theme.color[color]};
+  color: ${(props) => props.fontColor};
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5384615385;
+  border: 1px solid gray;
+`;
 
 export default useList;

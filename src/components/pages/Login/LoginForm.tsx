@@ -10,7 +10,7 @@ const LoginForm = () => {
           <Input placeholder={item.placeholder} id={item.id} name={item.id} />
         </Fragment>
       ))}
-      <Button>로그인</Button>
+      <Button type="submit">로그인</Button>
     </Form>
   );
 };

@@ -1,39 +1,69 @@
-import { CreatorModal } from 'contexts/adminStore';
+import { CreatorModel } from 'contexts/adminStore';
 
-interface LoginModal {
+export const baseUrl = 'https://api-ef.stockfolio.ai';
+
+interface LoginModel {
   username: string;
   password: string;
 }
 
-interface TokenModal {
+interface TokenModel {
   token: string;
 }
 
-interface UserModal {
+interface UserModel {
   name: string;
   nickname: string;
   userId: string;
   username: string;
 }
 
-interface CustomerModal {
+interface CustomerModel {
   email: string;
   mobile: string;
   name: string;
 }
 
-class FetchData {
-  baseUrl = 'https://api-ef.stockfolio.ai';
+interface CustomerDefaultModel {
+  channelLink: string;
+  channelName: string;
+  email: string;
+  mobile: string;
+  name: string;
+  userId: string;
+}
 
-  login = async (values: LoginModal) => {
+export interface CustomerDataModel extends CustomerDefaultModel {
+  createdAt: string;
+}
+
+export interface CustomerDetailModel extends CustomerDefaultModel {
+  onedriveLink: string;
+  personaLink: string;
+  memo: string;
+}
+
+class FetchData {
+  makeHader = (token: string) => {
+    return {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+  };
+
+  login = async (values: LoginModel) => {
     try {
-      const resValue = await fetch(`${this.baseUrl}/sign-in`, {
+      const resValue = await fetch(`${baseUrl}/sign-in`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
         body: JSON.stringify(values),
-      }).then<TokenModal>((res) => res.json());
+      }).then<TokenModel>((res) => {
+        if (!res.ok) throw Error('hello');
+        return res.json();
+      });
+
       localStorage.setItem('editfolio-admin-token', resValue.token);
       return true;
     } catch {
@@ -53,22 +83,17 @@ class FetchData {
       return;
     }
 
-    const headerDict: HeadersInit = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
     try {
-      const res = await fetch(`${this.baseUrl}/admin/me`, {
-        headers: new Headers(headerDict),
-      }).then<UserModal>((res) => res.json());
+      const res = await fetch(`${baseUrl}/admin/me`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<UserModel>((res) => res.json());
       return res;
     } catch {
       console.error('정보를 가져올 수 없습니다.');
     }
   };
 
-  createCustomer = async (values: CustomerModal) => {
+  createCustomer = async (values: CustomerModel) => {
     const token = localStorage.getItem('editfolio-admin-token');
     if (!token) {
       console.error('토큰이 없습니다.');
@@ -81,7 +106,7 @@ class FetchData {
     };
 
     try {
-      await fetch(`${this.baseUrl}/customer`, {
+      await fetch(`${baseUrl}/customer`, {
         method: 'POST',
         headers: new Headers(headerDict),
         body: JSON.stringify(values),
@@ -99,15 +124,8 @@ class FetchData {
       return false;
     }
 
-    const headerDict: HeadersInit = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${
-        localStorage.getItem('editfolio-admin-token') as string
-      }`,
-    };
-
-    return fetch(`${this.baseUrl}/customer`, {
-      headers: new Headers(headerDict),
+    return fetch(`${baseUrl}/customer`, {
+      headers: new Headers(this.makeHader(token)),
     }).then((res) => res.json());
   };
 
@@ -118,16 +136,22 @@ class FetchData {
       return;
     }
 
-    const headerDict: HeadersInit = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${
-        localStorage.getItem('editfolio-admin-token') as string
-      }`,
-    };
+    const res = await fetch(`${baseUrl}/admin/creator`, {
+      headers: new Headers(this.makeHader(token)),
+    }).then<CreatorModel[]>((res) => res.json());
+    return res;
+  };
 
-    const res = await fetch(`${this.baseUrl}/admin/creator`, {
-      headers: headerDict,
-    }).then<CreatorModal[]>((res) => res.json());
+  getCustomerDetail = async (customerId: string) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return;
+    }
+
+    const res = await fetch(`${baseUrl}/customer/${customerId}`, {
+      headers: new Headers(this.makeHader(token)),
+    }).then<CustomerDetailModel>((res) => res.json());
     return res;
   };
 }

@@ -55,6 +55,16 @@ const Aside = () => {
       </UserListBox>
       <UserListBox
         type="button"
+        selected={pathname === '/request-edit'}
+        onClick={() =>
+          pathname !== '/request-edit' && changePage('/request-edit')
+        }
+      >
+        <RequestingSvg />
+        <UserListText>제작 수정 요청</UserListText>
+      </UserListBox>
+      <UserListBox
+        type="button"
         selected={pathname === '/request-finish'}
         onClick={() =>
           pathname !== '/request-finish' && changePage('/request-finish')

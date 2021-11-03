@@ -5,17 +5,17 @@ interface buttonProps {
   color: 'purple' | 'white';
 }
 
-interface modalContent {
+interface ModelContent {
   description: string;
   subDescription: string;
   actionButton?: () => void;
 }
 
-interface modalProps {
-  content: modalContent;
+interface ModelProps {
+  content: ModelContent;
 }
 
-const ModalForm = ({ content }: modalProps) => {
+const ModelForm = ({ content }: ModelProps) => {
   const { description, subDescription, actionButton } = content;
   const onClose = () => {
     console.log('close');
@@ -94,4 +94,4 @@ const Button = styled.button<buttonProps>`
   line-height: 1.5714285714;
 `;
 
-export default ModalForm;
+export default ModelForm;

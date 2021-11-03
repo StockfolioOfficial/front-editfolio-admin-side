@@ -1,56 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
-import OrderFetchData from 'service/fetchOrder';
+import OrderFetchData, { OrderDetailModel } from 'service/fetchOrder';
 import TitleHeader from 'components/TitleHeader';
 import Header from '../Header';
 import Aside from '../../Aside/Aside';
 import ProductionInformation from './ProductionInformation';
 import OrderControlPanel from './OrderControlPanel';
-// import CustomerInformation from './CustomerInformation';
-
-interface AssigneeType {
-  assignee: string;
-  assigneeName: string;
-  assigneeNickname: string;
-}
-
-export interface OrderDataType {
-  assignee?: AssigneeType;
-  dueDate?: string;
-  orderId: string;
-  orderState: number;
-  orderStateContent: string;
-  orderedAt: string;
-  orderer: string;
-  remainingEditCount: number;
-  requirement?: string;
-}
+import CustomerInformation from './CustomerInformation';
 
 const DetailPage = () => {
-  const [orderData, setOrderData] = useState<OrderDataType>({
+  const [orderData, setOrderData] = useState<OrderDetailModel>({
     orderId: '',
     orderState: 0,
     orderStateContent: '대기',
-    orderedAt: '',
-    remainingEditCount: 0,
+    orderedAt: `${Date.now()}`,
     orderer: '',
+    remainingEditCount: 0,
   });
   const param = useParams<{ id: string; page: string }>();
   const { getOrderDetail } = new OrderFetchData();
 
   async function setOrderDetail() {
     try {
-      const res = (await getOrderDetail(param.id)) as OrderDataType;
+      const res = await getOrderDetail(param.id);
+      if (!res) throw Error('주문정보를 가져오지 못했습니다.');
       setOrderData(res);
     } catch {
       console.error('주문정보를 가져오지 못했습니다.');
     }
   }
 
+  function renderHeader() {
+    switch (param.page) {
+      case 'ongoing':
+        return '제작 의뢰 진행중';
+      case 'edit':
+        return '제작 수정 중...';
+      case 'complete':
+        return '제작 의뢰 완료';
+      default:
+        return '제작 의뢰 요청';
+    }
+  }
+
   useEffect(() => {
     setOrderDetail();
-  }, [param.id]);
+  }, [param.id, param.page]);
 
   return (
     <>
@@ -58,10 +54,10 @@ const DetailPage = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          <TitleHeader title="제작 의뢰 완료" />
+          <TitleHeader title={renderHeader()} />
           <ProductionInformation orderId={orderData.orderId} />
           <OrderControlPanel page={param.page} data={orderData} />
-          {/* <CustomerInformation customerId={orderData.orderer} isRequest /> */}
+          <CustomerInformation customerId={orderData.orderer} isRequest />
         </MainLayout>
       </MainBox>
     </>

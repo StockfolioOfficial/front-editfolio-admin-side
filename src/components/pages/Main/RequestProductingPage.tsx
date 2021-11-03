@@ -5,14 +5,13 @@ import OrderFetchData from 'service/fetchOrder';
 import Nav from '../Header';
 import Aside from '../../Aside/Aside';
 
-const MENULIST = ['날짜', '이름', ' 편집자', '상태'];
+const MENULIST = ['날짜', '고객명', ' 편집자', '상태'];
 
 const RequestProductingPage = () => {
   const { getReguestingOrderList } = new OrderFetchData();
 
   const { CategoryView, OrderList } = useList(
     'ongoing',
-    'request',
     getReguestingOrderList,
   );
 
@@ -22,11 +21,7 @@ const RequestProductingPage = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          <TitleHeader
-            title="제작 의뢰 진행중"
-            placeholder="휴대폰 번호 검색"
-            // isSearch
-          />
+          <TitleHeader title="제작 의뢰 진행중" />
           <CategoryView category={MENULIST} />
           <OrderList />
         </MainLayout>
@@ -43,6 +38,7 @@ const MainLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: 0 32px;
   background-color: #fafafa;
 `;
 

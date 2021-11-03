@@ -1,21 +1,25 @@
 import { makeAutoObservable } from 'mobx';
 
-export interface CreatorModal {
+export interface CreatorModel {
   name: string;
   nickname: string;
   userId: string;
 }
 
 class Admin {
-  creators: CreatorModal[];
+  creators: CreatorModel[];
 
   constructor() {
     makeAutoObservable(this);
     this.creators = [];
   }
 
-  setCreator = (creators: CreatorModal[]) => {
+  setCreator = (creators: CreatorModel[]) => {
     this.creators = creators;
+  };
+
+  getCreatorId = (name: string) => {
+    return this.creators.find((creator) => creator.name === name)?.userId;
   };
 }
 

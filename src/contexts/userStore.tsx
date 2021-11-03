@@ -1,13 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 
-interface UserModal {
+interface UserModel {
   name: string;
   nickname: string;
   userId: string;
   email: string;
 }
 
-export const initUser: UserModal = {
+export const initUser: UserModel = {
   name: '',
   nickname: '',
   userId: '',
@@ -31,7 +31,7 @@ class User {
     this.email = initUser.email;
   }
 
-  setUser = (data: Partial<UserModal>) => {
+  setUser = (data: Partial<UserModel>) => {
     if (data.userId) this.userId = data.userId;
     if (data.name) this.name = data.name;
     if (data.nickname) this.nickname = data.nickname;

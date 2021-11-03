@@ -1,38 +1,88 @@
-export interface OrderModal {
+import { baseUrl } from './fetch';
+
+export const stateDatas = [
+  {
+    id: 1,
+    content: '편집자 배정 중',
+  },
+  {
+    id: 2,
+    content: '영상 검토 중',
+  },
+  {
+    id: 3,
+    content: '편집 중',
+  },
+  {
+    id: 4,
+    content: '이펙트 추가 중',
+  },
+  {
+    id: 5,
+    content: '완료',
+  },
+  {
+    id: 6,
+    content: '최종 완료',
+  },
+  {
+    id: 7,
+    content: '수정 중',
+  },
+  {
+    id: 8,
+    content: '수정 완료',
+  },
+];
+
+export interface OrderListModel {
   orderId: string;
   orderedAt: string;
   ordererChannelLink: string;
   ordererChannelName: string;
   ordererName: string;
-  assigneeName?: string;
-  assigneeNickname?: string;
   orderState?: number;
   orderStateContent?: string;
+  assigneeName?: string;
+  assigneeNickname?: string;
 }
 
-export interface OrderDataModal {
-  assignee: {
+export interface OrderDetailModel {
+  assignee?: {
     assignee: string;
     assigneeName: string;
     assigneeNickname: string;
   };
-  dueDate: string;
+  dueDate?: string;
   orderId: string;
   orderState: number;
   orderStateContent: string;
   orderedAt: string;
   orderer: string;
   remainingEditCount: number;
-  requirement: string;
+  requirement?: string;
 }
 
-export interface OrderStateModal {
+export interface OrderStateModel {
   id: number;
   content: string;
 }
 
+export type UpdataOrderModel = Pick<
+  OrderDetailModel,
+  'orderId' | 'dueDate' | 'orderState'
+> &
+  Record<'assignee', string>;
+
 class OrderFetchData {
-  baseUrl = 'https://api-ef.stockfolio.ai';
+  orderBaseUrl = `${baseUrl}/order`;
+
+  makeHader = (token: string) => {
+    return {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+  };
 
   getReguestOrderList = async () => {
     const token = localStorage.getItem('editfolio-admin-token');
@@ -41,15 +91,10 @@ class OrderFetchData {
       return;
     }
 
-    const headerDict = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
     try {
-      const resList = await fetch(`${this.baseUrl}/order/ready`, {
-        headers: new Headers(headerDict),
-      }).then<OrderModal[]>((res) => {
+      const resList = await fetch(`${this.orderBaseUrl}/ready`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<OrderListModel[]>((res) => {
         if (res.status === 200) return res.json();
         if (res.status === 204) return [];
         throw Error(`${res.status}`);
@@ -66,16 +111,41 @@ class OrderFetchData {
       console.error('토큰이 없습니다.');
       return;
     }
-    const headerDict = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
 
     try {
-      const resList = await fetch(`${this.baseUrl}/order/processing`, {
-        headers: new Headers(headerDict),
-      }).then<OrderModal[]>((res) => res.json());
-      return resList;
+      const resList = await fetch(`${this.orderBaseUrl}/processing`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<OrderListModel[]>((res) => {
+        if (res.status === 200) return res.json();
+        if (res.status === 204) return [];
+        throw Error(`${res.status}`);
+      });
+      return resList.filter(
+        (list) => list.orderState !== 7 && list.orderState !== 8,
+      );
+    } catch {
+      console.error('리스트를 가져오지 못했습니다.');
+    }
+  };
+
+  getEditOrderList = async () => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return;
+    }
+
+    try {
+      const resList = await fetch(`${this.orderBaseUrl}/processing`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<OrderListModel[]>((res) => {
+        if (res.status === 200) return res.json();
+        if (res.status === 204) return [];
+        throw Error(`${res.status}`);
+      });
+      return resList.filter(
+        (list) => list.orderState === 7 || list.orderState === 8,
+      );
     } catch {
       console.error('리스트를 가져오지 못했습니다.');
     }
@@ -88,15 +158,10 @@ class OrderFetchData {
       return;
     }
 
-    const headerDict = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
     try {
-      const resList = await fetch(`${this.baseUrl}/order/done`, {
-        headers: new Headers(headerDict),
-      }).then<OrderModal[]>((res) => res.json());
+      const resList = await fetch(`${this.orderBaseUrl}/done`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<OrderListModel[]>((res) => res.json());
       return resList;
     } catch {
       console.error('리스트를 가져오지 못했습니다.');
@@ -109,43 +174,31 @@ class OrderFetchData {
       console.error('토큰이 없습니다.');
       return;
     }
-    const headerDict = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
 
     try {
-      const resList = await fetch(`${this.baseUrl}/order/${orderId}`, {
-        headers: new Headers(headerDict),
-      }).then<OrderDataModal>((res) => res.json());
+      const resList = await fetch(`${this.orderBaseUrl}/${orderId}`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<OrderDetailModel>((res) => res.json());
       return resList;
     } catch {
       console.error('리스트를 가져오지 못했습니다.');
     }
   };
 
-  saveOrderDetailData = async (
-    orderData: Pick<OrderDataModal, 'orderId' | 'dueDate' | 'orderState'> &
-      Record<'assignee', OrderDataModal['assignee']['assignee']>,
-  ) => {
+  saveOrderDetailData = async (orderData: UpdataOrderModel) => {
     const token = localStorage.getItem('editfolio-admin-token');
     if (!token) {
       console.error('토큰이 없습니다.');
       return false;
     }
 
-    const headerDict: HeadersInit = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
     try {
-      await fetch(`${this.baseUrl}/order/${orderData.orderId}`, {
+      await fetch(`${this.orderBaseUrl}/${orderData.orderId}`, {
         method: 'PUT',
-        headers: new Headers(headerDict),
+        headers: new Headers(this.makeHader(token)),
         body: JSON.stringify({
           assignee: orderData.assignee,
-          dueDate: `${orderData.dueDate}T00:00:00+00:00`,
+          dueDate: orderData.dueDate,
           orderState: orderData.orderState,
         }),
       }).then((res) => console.log(res));
@@ -163,19 +216,11 @@ class OrderFetchData {
       return false;
     }
 
-    const headerDict: HeadersInit = {
-      method: 'POST',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
     try {
-      const resId = await fetch(
-        `${this.baseUrl}/order/${orderId}/assign-self`,
-        {
-          headers: new Headers(headerDict),
-        },
-      ).then<Pick<OrderDataModal, 'orderId'>>((res) => res.json());
+      const resId = await fetch(`${this.orderBaseUrl}/${orderId}/assign-self`, {
+        method: 'POST',
+        headers: new Headers(this.makeHader(token)),
+      }).then<Pick<OrderDetailModel, 'orderId'>>((res) => res.json());
       console.log(resId.orderId);
       return true;
     } catch {
@@ -184,22 +229,11 @@ class OrderFetchData {
     }
   };
 
-  getFullStates = async () => {
-    try {
-      const states = await fetch(`${this.baseUrl}/state/full`).then<
-        OrderStateModal[]
-      >((res) => res.json());
-      return states;
-    } catch {
-      console.error('상태 정보를 가져오지 못했습니다.');
-    }
-  };
-
   getStateOptions = async (stateId: number) => {
     try {
-      const resOptions = await fetch(
-        `${this.baseUrl}/state/${stateId}/sub`,
-      ).then<OrderStateModal[] | undefined>((res) => res.json());
+      const resOptions = await fetch(`${baseUrl}/state/${stateId}/sub`).then<
+        OrderStateModel[] | undefined
+      >((res) => res.json());
       return resOptions || [];
     } catch {
       console.error('옵션 리스트를 가져올 수 없습니다.');

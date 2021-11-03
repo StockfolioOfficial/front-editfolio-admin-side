@@ -10,11 +10,7 @@ interface customerProps {
 const CustomerInformation = ({ customerId, isRequest }: customerProps) => {
   return (
     <>
-      {isRequest && (
-        <>
-          <ProductSubTitle>고객 정보</ProductSubTitle>
-        </>
-      )}
+      {isRequest && <ProductSubTitle>고객 정보</ProductSubTitle>}
       <CustomerInfoBox>
         <CustomerSubInformation customerId={customerId} />
       </CustomerInfoBox>

@@ -1,22 +1,26 @@
-import { CreatorModal } from 'contexts/adminStore';
-import { useRef } from 'react';
+import { CreatorModel } from 'contexts/adminStore';
 import OrderControlItem from './OrderControlItem';
 
 interface SelectEditorProps {
-  options: CreatorModal[];
+  defaultValue?: string;
+  options: CreatorModel[];
+  isComplete?: boolean;
 }
 
-const SelectEditor = ({ options }: SelectEditorProps) => {
-  const editorInputRef = useRef<HTMLInputElement | null>(null);
-
+const SelectEditor = ({
+  defaultValue,
+  options,
+  isComplete,
+}: SelectEditorProps) => {
   return (
     <OrderControlItem
       title="담당 편집자"
       type="selectBox"
       inputProps={{
         name: 'editors',
-        ref: editorInputRef,
+        defaultValue,
         autoComplete: 'off',
+        disabled: isComplete,
       }}
       options={options.map((creator) => ({
         text: `${creator.name}${
@@ -26,6 +30,11 @@ const SelectEditor = ({ options }: SelectEditorProps) => {
       }))}
     />
   );
+};
+
+SelectEditor.defaultProps = {
+  defaultValue: undefined,
+  isComplete: false,
 };
 
 export default SelectEditor;

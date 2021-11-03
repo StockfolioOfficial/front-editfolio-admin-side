@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import FetchData, { CustomerDetailModel } from 'service/fetch';
 import styled from 'styled-components';
 
 interface CustomerSubInformationTpye {
@@ -6,118 +7,142 @@ interface CustomerSubInformationTpye {
 }
 
 const CustomerSubInformation = ({ customerId }: CustomerSubInformationTpye) => {
-  const [subList, setSubList] = useState<any>({});
+  const [subList, setSubList] = useState<CustomerDetailModel>({
+    channelLink: '',
+    channelName: '',
+    email: '',
+    mobile: '',
+    name: '',
+    userId: '',
+    onedriveLink: '',
+    personaLink: '',
+    memo: '',
+  });
+  const { getCustomerDetail } = new FetchData();
+
+  async function setCustomerSubList() {
+    if (customerId === '') return;
+    const res = await getCustomerDetail(customerId);
+    if (!res) return;
+    setSubList(res);
+  }
 
   useEffect(() => {
-    const headerDict = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${
-        localStorage.getItem('editfolio-admin-token') as string
-      }`,
-    };
-
-    fetch(`https://api-ef.stockfolio.ai/order/${customerId}`, {
-      headers: new Headers(headerDict),
-    })
-      .then((res) => res.json())
-      .then((data) => setSubList(data));
-  }, []);
-
-  console.log(subList.orderId);
+    setCustomerSubList();
+  }, [customerId]);
 
   return (
-    <>
-      <DirectionLayout>
-        <CustomerFirstSubLayout>
-          <CustomerInfoTitle>고객명</CustomerInfoTitle>
-          <CustomerLine>김승찬(프론트엔드)</CustomerLine>
-        </CustomerFirstSubLayout>
-        <CustomerFirstSubLayout>
-          <CustomerInfoTitle>UID</CustomerInfoTitle>
-          <CustomerLine>b733c0ef-d66b-434f-9240-7caa9b08d2e4</CustomerLine>
-        </CustomerFirstSubLayout>
-      </DirectionLayout>
-      <DirectionLayout>
-        <CustomerFirstSubLayout>
-          <CustomerInfoTitle>이메일</CustomerInfoTitle>
-          <CustomerLine>misomiin11@gmail.com</CustomerLine>
-        </CustomerFirstSubLayout>
-        <CustomerFirstSubLayout>
-          <CustomerInfoTitle>전화번호</CustomerInfoTitle>
-          <CustomerLine>010-1234-5678</CustomerLine>
-        </CustomerFirstSubLayout>
-      </DirectionLayout>
-      <DirectionLayout>
-        <CustomerFirstSubLayout>
-          <CustomerPersonaTitle>페르소나</CustomerPersonaTitle>
-          <CustomerLine href="https://https://stockfolio.notion.site/Stockers-1-657e6a9b069544758d5012ec9d0988e0">
-            https://https://stockfolio.notion.site/Stockers-1-657e6a9b069544758d5012ec9d0988e0
-          </CustomerLine>
-        </CustomerFirstSubLayout>
-      </DirectionLayout>
-      <DirectionLayout>
-        <CustomerFirstSubLayout>
-          <CustomerPersonaTitle>OneDrive</CustomerPersonaTitle>
-          <CustomerLine href="https://www.microsoft.com/ko-kr/microsoft-365/onedrive/online-cloud-storage">
-            https://www.microsoft.com/ko-kr/microsoft-365/onedrive/online-cloud-storage
-          </CustomerLine>
-        </CustomerFirstSubLayout>
-      </DirectionLayout>
-      <DirectionLayout>
-        <CustomerFirstSubLayout>
-          <CustomerPersonaTitle>비고</CustomerPersonaTitle>
-          <CustomerNote>
-            가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사가나다라마바사
-          </CustomerNote>
-        </CustomerFirstSubLayout>
-      </DirectionLayout>
-    </>
+    <CostomerSubInfoRoot>
+      <CostomerSubInfoWrap>
+        <CustomerInfoTitle>고객명</CustomerInfoTitle>
+        <CustomerInfoContent>{subList.name}</CustomerInfoContent>
+      </CostomerSubInfoWrap>
+      <CostomerSubInfoWrap>
+        <CustomerInfoTitle>UID</CustomerInfoTitle>
+        <CustomerInfoContent>{subList.userId}</CustomerInfoContent>
+      </CostomerSubInfoWrap>
+      <CostomerSubInfoWrap>
+        <CustomerInfoTitle>이메일</CustomerInfoTitle>
+        <CustomerInfoContent>
+          {subList.email || '이메일이 없습니다.'}
+        </CustomerInfoContent>
+      </CostomerSubInfoWrap>
+      <CostomerSubInfoWrap>
+        <CustomerInfoTitle>전화번호</CustomerInfoTitle>
+        <CustomerInfoContent>
+          {subList.mobile || '전화번호가 없습니다.'}
+        </CustomerInfoContent>
+      </CostomerSubInfoWrap>
+      <CostomerSubInfoWrap>
+        <CustomerInfoTitle>페르소나</CustomerInfoTitle>
+        {subList.personaLink ? (
+          <CustomerInfoContent>
+            <CustomerLink href={subList.personaLink}>
+              {subList.personaLink}
+            </CustomerLink>
+          </CustomerInfoContent>
+        ) : (
+          <CustomerInfoContent>페스소나가 없습니다.</CustomerInfoContent>
+        )}
+      </CostomerSubInfoWrap>
+      <CostomerSubInfoWrap>
+        <CustomerInfoTitle>OneDrive</CustomerInfoTitle>
+        <CustomerInfoContent>
+          <CustomerLink href={subList.onedriveLink}>
+            {subList.onedriveLink}
+          </CustomerLink>
+        </CustomerInfoContent>
+      </CostomerSubInfoWrap>
+      <CustomerNoteWrap>
+        <CustomerNoteTitle>비고</CustomerNoteTitle>
+        <CustomerNote>{subList.memo || '비고란이 없습니다.'}</CustomerNote>
+      </CustomerNoteWrap>
+    </CostomerSubInfoRoot>
   );
 };
 
-const DirectionLayout = styled.div`
+const CostomerSubInfoRoot = styled.div`
   display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: 24px;
+
+  > div:nth-child(1),
+  > div:nth-child(2),
+  > div:nth-child(3),
+  > div:nth-child(4) {
+    width: 45%;
+  }
 `;
 
-const CustomerFirstSubLayout = styled.div`
-  display: flex;
+const CostomerSubInfoWrap = styled.div`
   width: 100%;
-  margin: 24px 132px 0 0px;
+  height: 48px;
+  margin-bottom: 12px;
+  display: flex;
 `;
 
 const CustomerInfoTitle = styled.div`
-  display: flex;
   width: 124px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
   font-size: 13px;
   color: #77828b;
   font-weight: 400;
   line-height: 20px;
-  padding: 14px 12px 14px 0px;
-  margin: 0 0 0 36px;
 `;
 
-const CustomerPersonaTitle = styled.div`
+const CustomerInfoContent = styled.p`
   display: flex;
-  width: 124px;
-  font-size: 13px;
-  color: #77828b;
-  font-weight: 400;
-  line-height: 20px;
-  padding: 14px 12px 14px 0px;
-  margin: 0 -15px 0 36px;
-`;
-
-const CustomerLine = styled.a`
-  width: 100%;
-  padding: 14px 0 0 12px;
+  align-items: center;
+  flex-grow: 1;
+  padding: 0 12px;
   font-size: 13px;
   line-height: 20px;
   border-bottom: 1px solid #becbd8;
 `;
 
+const CustomerLink = styled.a`
+  color: #6ab4f7;
+`;
+
+const CustomerNoteWrap = styled(CostomerSubInfoWrap)`
+  height: auto;
+`;
+
+const CustomerNoteTitle = styled.div`
+  width: 124px;
+  padding-top: 14px;
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #77828b;
+  font-weight: 400;
+  line-height: 20px;
+`;
+
 const CustomerNote = styled.div`
-  margin: 14px 0 74px 0;
-  width: 100%;
+  padding: 14px 12px 12px;
   font-size: 13px;
   line-height: 20px;
 `;

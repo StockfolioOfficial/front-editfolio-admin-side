@@ -7,7 +7,7 @@ import { useHistory, useLocation } from 'react-router';
 import Nav from '../Header';
 import Aside from '../../Aside/Aside';
 
-const MENULIST = ['날짜', '고객명(채널명)'];
+const MENULIST = ['날짜', '고객명'];
 
 const RequestProductionPage = () => {
   const { pathname } = useLocation();
@@ -15,14 +15,9 @@ const RequestProductionPage = () => {
 
   const { getReguestOrderList } = new OrderFetchData();
 
-  const { CategoryView, OrderList } = useList(
-    'request',
-    'request',
-    getReguestOrderList,
-  );
+  const { CategoryView, OrderList } = useList('request', getReguestOrderList);
 
   useEffect(() => {
-    // console.log(pathname);
     if (pathname === '/request-production') return;
     history.replace('/request-production');
   }, []);
@@ -33,11 +28,7 @@ const RequestProductionPage = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          <TitleHeader
-            title="제작 의뢰 요청"
-            placeholder="휴대폰 번호 검색"
-            // isSearch
-          />
+          <TitleHeader title="제작 의뢰 요청" />
           <CategoryView category={MENULIST} />
           <OrderList />
         </MainLayout>
@@ -54,7 +45,7 @@ const MainLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 40px 32px;
+  padding: 0 32px;
   background-color: #fafafa;
 `;
 

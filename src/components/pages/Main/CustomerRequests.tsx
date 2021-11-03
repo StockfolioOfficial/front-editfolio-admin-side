@@ -1,13 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CustomerRequests = () => {
+interface CustomerRequestsProps {
+  content?: string;
+}
+
+const CustomerRequests = ({ content }: CustomerRequestsProps) => {
   return (
     <>
       <OrderDateTitle>고객 요청사항</OrderDateTitle>
-      <CutomerRequestBox>이러쿵 저러쿵</CutomerRequestBox>
+      <CutomerRequestBox>
+        {content || '고객 요청 사항이 없습니다.'}
+      </CutomerRequestBox>
     </>
   );
+};
+
+CustomerRequests.defaultProps = {
+  content: undefined,
 };
 
 const OrderDateTitle = styled.div`

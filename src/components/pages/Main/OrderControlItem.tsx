@@ -23,16 +23,16 @@ const OrderControlItem = ({
   inputProps,
   options = [],
 }: OrderControlItemProps) => {
-  const { onFocus, ref, ...rest } = inputProps || {};
+  const { onFocus, ref, ...inputRest } = inputProps || {};
   const [open, setOpen] = useState<boolean>(false);
   const inputRef = (ref ||
     useRef<HTMLInputElement | null>(
       null,
     )) as React.MutableRefObject<HTMLInputElement | null>;
 
-  function selectOption(value: string) {
+  function selectOption(target: string) {
     if (!inputRef.current) return;
-    inputRef.current.value = value;
+    inputRef.current.value = target;
     if (open) setOpen(false);
   }
 
@@ -48,12 +48,12 @@ const OrderControlItem = ({
           <OrderInputBox active={open}>
             <OrderSelectInput
               type="text"
-              defaultValue="-"
               onFocus={(e) => onFocusIn(e)}
+              onChange={(e) => e.currentTarget.value}
               ref={inputRef}
-              {...rest}
+              {...inputRest}
             />
-            {options.length > 0 && (
+            {options.length > 0 && !inputProps?.disabled && (
               <button type="button" onClick={() => setOpen(!open)}>
                 <ArrowSvg />
               </button>
@@ -121,7 +121,7 @@ const OrderContentBox = styled.div`
 `;
 
 const OrderSelectInput = styled.input`
-  max-width: 190px;
+  min-width: 190px;
   height: 100%;
   position: relative;
   padding: 12px 12px 12px 16px;

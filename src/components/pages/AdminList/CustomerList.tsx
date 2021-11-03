@@ -5,11 +5,10 @@ import TitleHeader from '../../TitleHeader';
 
 const CustomerList = () => {
   const fetch = new FetchData();
-  const { CategoryView, CustomerDataList } = useList(
-    'customerList',
-    'request',
-    fetch.getCustomerList,
-  );
+  const {
+    CategoryView,
+    // CustomerDataList
+  } = useList('customerList', fetch.getCustomerList);
 
   return (
     <>
@@ -19,7 +18,7 @@ const CustomerList = () => {
         isSearch
       />
       <CategoryView category={CATEGORY} />
-      <CustomerDataList />
+      {/* <CustomerDataList /> */}
     </>
   );
 };

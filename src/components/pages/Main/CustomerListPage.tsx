@@ -12,11 +12,10 @@ const MENULIST = ['날짜', '이름', ' 편집자', '전화번호'];
 const CustomerListPage = () => {
   const fetch = new FetchData();
 
-  const { CategoryView, CustomerDataList } = useList(
-    'customerList',
-    'request',
-    fetch.getCustomerList,
-  );
+  const {
+    CategoryView,
+    // CustomerDataList
+  } = useList('customerList', fetch.getCustomerList);
 
   return (
     <>
@@ -30,7 +29,7 @@ const CustomerListPage = () => {
             isSearch
           />
           <CategoryView category={MENULIST} />
-          <CustomerDataList />
+          {/* <CustomerDataList /> */}
         </MainLayout>
       </MainBox>
     </>

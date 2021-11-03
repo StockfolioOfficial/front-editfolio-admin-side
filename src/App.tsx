@@ -5,10 +5,11 @@ import RequestProductionPage from 'components/pages/Main/RequestProductionPage';
 import RequestProductingPage from 'components/pages/Main/RequestProductingPage';
 import RequestFinishPage from 'components/pages/Main/RequestFinishPage';
 import DetailPage from 'components/pages/Main/DetailPage';
-// import AdminList from 'components/pages/AdminList';
-// import CustomerListPage from 'components/pages/Main/CustomerListPage';
+import AdminList from 'components/pages/AdminList';
+import CustomerListPage from 'components/pages/Main/CustomerListPage';
 import FetchData from 'service/fetch';
 import { useStores } from 'index';
+import RequestEditPage from 'components/pages/Main/RequestEditPage';
 
 function Wrapper({ children }: React.HTMLAttributes<HTMLDivElement>) {
   const history = useHistory();
@@ -58,10 +59,11 @@ function App(): JSX.Element {
             path="/request-producting"
             component={RequestProductingPage}
           />
+          <Route exact path="/request-edit" component={RequestEditPage} />
           <Route exact path="/request-finish" component={RequestFinishPage} />
           <Route exact path="/detail/:page/:id" component={DetailPage} />
-          {/* <Route exact path="/admin-list" component={AdminList} /> */}
-          {/* <Route exact path="/customer-list" component={CustomerListPage} /> */}
+          <Route exact path="/admin-list" component={AdminList} />
+          <Route exact path="/customer-list" component={CustomerListPage} />
         </Switch>
       </Wrapper>
     </BrowserRouter>

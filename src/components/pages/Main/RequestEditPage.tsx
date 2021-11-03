@@ -8,10 +8,10 @@ import Aside from '../../Aside/Aside';
 
 const MENULIST = ['날짜', '고객명', '상태'];
 
-const RequestFinishPage = () => {
-  const { getFinishOrderList } = new OrderFetchData();
+const RequestEditPage = () => {
+  const { getEditOrderList } = new OrderFetchData();
 
-  const { CategoryView, OrderList } = useList('complete', getFinishOrderList);
+  const { CategoryView, OrderList } = useList('edit', getEditOrderList);
 
   return (
     <>
@@ -19,7 +19,7 @@ const RequestFinishPage = () => {
       <MainBox>
         <Aside />
         <MainLayout>
-          <TitleHeader title="제작 의뢰 완료" />
+          <TitleHeader title="제작 수정 요청" />
           <CategoryView category={MENULIST} />
           <OrderList />
         </MainLayout>
@@ -40,4 +40,4 @@ const MainLayout = styled.div`
   background-color: #fafafa;
 `;
 
-export default RequestFinishPage;
+export default RequestEditPage;

@@ -1,39 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import OrderControlItem from './OrderControlItem';
 
 interface SelectDeliveryDate {
   defaultValue?: string;
-  fixed?: boolean;
+  isComplete?: boolean;
 }
 
-const SelectDeliveryDate = ({ defaultValue, fixed }: SelectDeliveryDate) => {
-  const [inputDate, setInputDate] = useState(defaultValue || '');
-  const dateInput = useRef<HTMLInputElement | null>(null);
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputDate(e.target.value);
-  };
-
+const SelectDeliveryDate = ({
+  defaultValue,
+  isComplete,
+}: SelectDeliveryDate) => {
   return (
     <OrderControlItem
       title="납품 예정일"
-      type={!fixed ? 'calendar' : undefined}
-      inputProps={
-        !fixed
-          ? {
-              value: inputDate,
-              onChange: handleOnChange,
-              ref: dateInput,
-            }
-          : undefined
-      }
+      type="calendar"
+      inputProps={{
+        defaultValue,
+        disabled: isComplete,
+      }}
     />
   );
 };
 
 SelectDeliveryDate.defaultProps = {
   defaultValue: '',
-  fixed: undefined,
+  isComplete: false,
 };
 
 export default SelectDeliveryDate;
