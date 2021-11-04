@@ -1,17 +1,16 @@
-import { useStores } from 'index';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { useHistory } from 'react-router';
-import FetchData from 'service/fetch';
 import styled from 'styled-components';
+import { observer } from 'mobx-react-lite';
+import { useHistory } from 'react-router';
+import { useStores } from 'index';
+import FetchData from 'service/fetch';
 import { ReactComponent as UnderArrow } from '../../../assets/styles/arrow.svg';
-// import { ReactComponent as ArrowPurpleIcon } from '../../../assets/styles/arrowPurple.svg';
 
 const Header = observer(() => {
   const history = useHistory();
   const { logout } = new FetchData();
   const { userStore } = useStores();
-  const { email, resetUser } = userStore;
+  const { username, resetUser } = userStore;
 
   function logoutUser() {
     logout();
@@ -21,9 +20,11 @@ const Header = observer(() => {
 
   return (
     <Root>
-      <LogoImg src="/images/Logo.png" />
+      <h1>
+        <img src="/images/Logo.png" alt="에딧폴리오" />
+      </h1>
       <EmailBox type="button" onClick={() => logoutUser()}>
-        <Email>{email}</Email>
+        <Name>{username}</Name>
         <UnderArrow />
       </EmailBox>
     </Root>
@@ -35,12 +36,12 @@ const Root = styled.header`
   justify-content: space-between;
   height: 60px;
   border-bottom: 1px solid ${({ theme }) => theme.color.stone};
-`;
 
-const LogoImg = styled.img`
-  width: 120px;
-  height: 32px;
-  margin: 12px 0 16px 32px;
+  h1 {
+    width: 120px;
+    height: 32px;
+    margin: 12px 0 16px 32px;
+  }
 `;
 
 const EmailBox = styled.button`
@@ -52,7 +53,7 @@ const EmailBox = styled.button`
   border-radius: 6px;
 `;
 
-const Email = styled.div`
+const Name = styled.div`
   display: flex;
   margin: 8px 11px 8px 12px;
 `;

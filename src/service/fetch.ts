@@ -11,11 +11,17 @@ interface TokenModel {
   token: string;
 }
 
-interface UserModel {
+export interface UserModel {
   name: string;
   nickname: string;
   userId: string;
   username: string;
+  roles: string[];
+}
+
+export interface AdminModal extends Omit<UserModel, 'username' | 'roles'> {
+  email: string;
+  createdAt: string;
 }
 
 interface CustomerModel {
@@ -24,12 +30,9 @@ interface CustomerModel {
   name: string;
 }
 
-interface CustomerDefaultModel {
+interface CustomerDefaultModel extends CustomerModel {
   channelLink: string;
   channelName: string;
-  email: string;
-  mobile: string;
-  name: string;
   userId: string;
 }
 
@@ -110,9 +113,12 @@ class FetchData {
         method: 'POST',
         headers: new Headers(headerDict),
         body: JSON.stringify(values),
-      }).then((res) => res.json());
+      }).then((res) => {
+        if (res.status > 300) throw Error(res.statusText);
+      });
       return true;
-    } catch {
+    } catch (err) {
+      console.error(err);
       return false;
     }
   };
@@ -121,12 +127,17 @@ class FetchData {
     const token = localStorage.getItem('editfolio-admin-token');
     if (!token) {
       console.error('토큰이 없습니다.');
-      return false;
+      return;
     }
 
-    return fetch(`${baseUrl}/customer`, {
+    const res = fetch(`${baseUrl}/customer`, {
       headers: new Headers(this.makeHader(token)),
-    }).then((res) => res.json());
+    }).then<CustomerDataModel[]>((res) => {
+      if (res.status === 200) return res.json();
+      if (res.status === 204) return [];
+      throw Error('고객 리스트를 가져오지 못했습니다.');
+    });
+    return res;
   };
 
   getCreatorList = async () => {
@@ -153,6 +164,75 @@ class FetchData {
       headers: new Headers(this.makeHader(token)),
     }).then<CustomerDetailModel>((res) => res.json());
     return res;
+  };
+
+  editCustomerDetail = async (data: CustomerDetailModel) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return false;
+    }
+
+    const { userId, ...rest } = data;
+
+    try {
+      return await fetch(`${baseUrl}/customer/${userId}`, {
+        method: 'PUT',
+        headers: new Headers(this.makeHader(token)),
+        body: JSON.stringify({
+          ...rest,
+        }),
+      }).then((res) => {
+        if (res.status === 204) return true;
+        return false;
+      });
+    } catch {
+      console.error('고객 정보를 수정할 수 없습니다.');
+      return false;
+    }
+  };
+
+  deleteCustomer = async (id: string) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return false;
+    }
+
+    try {
+      await fetch(`${baseUrl}/customer/${id}`, {
+        method: 'DELETE',
+        headers: new Headers(this.makeHader(token)),
+      }).then((res) => {
+        if (res.ok) return;
+        throw Error('고객을 삭제할 수 없습니다.');
+      });
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
+  getAdminList = async () => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${baseUrl}/admin`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<AdminModal[]>((res) => {
+        if (res.status === 200) return res.json();
+        if (res.status === 204) return [];
+        throw Error('어드민 목록을 가져올 수 없습니다.');
+      });
+      return res;
+    } catch {
+      console.error('어드민 목록을 가져올 수 없습니다.');
+    }
   };
 }
 

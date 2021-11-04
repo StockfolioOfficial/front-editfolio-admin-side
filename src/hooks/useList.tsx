@@ -1,30 +1,31 @@
+import { theme } from 'assets/styles/theme';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import FetchData, { AdminModal, CustomerDataModel } from 'service/fetch';
 import OrderFetchData, { OrderListModel } from 'service/fetchOrder';
 import styled from 'styled-components';
 
 interface colorProps {
-  color:
-    | 'purple'
-    | 'gray'
-    | 'violet'
-    | 'mint'
-    | 'skyblue'
-    | 'black'
-    | 'white'
-    | 'red';
+  color: keyof typeof theme.color;
   width?: string;
-  fontColor?: string;
+  fontColor?: keyof typeof theme.color;
 }
 
-const useList = (page: string, fetch?: () => Promise<any>) => {
-  const [list, setList] = useState<OrderListModel[]>([]);
+const useList = (
+  page: string,
+  fetch?: () =>
+    | Promise<OrderListModel[] | undefined>
+    | Promise<CustomerDataModel[] | undefined>
+    | Promise<AdminModal[] | undefined>,
+) => {
+  const [list, setList] = useState<
+    OrderListModel[] | CustomerDataModel[] | AdminModal[]
+  >([]);
 
   async function setListFetch() {
     if (!fetch) return;
     const res = await fetch();
     if (!res) return;
-    if (res?.errorCode) return;
     setList(res);
   }
 
@@ -83,6 +84,7 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
 
   const renderButton = (id?: string) => {
     const history = useHistory();
+    const { deleteCustomer } = new FetchData();
     const { takeMeOrder } = new OrderFetchData();
     switch (page) {
       case 'request':
@@ -95,7 +97,7 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
               onClick={() =>
                 id &&
                 takeMeOrder(id).then(() =>
-                  history.push(`/detail/ongoing/${id}`),
+                  history.push(`/order-detail/ongoing/${id}`),
                 )
               }
             >
@@ -104,7 +106,7 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push(`/detail/${page}/${id}`)}
+              onClick={() => history.push(`/order-detail/${page}/${id}`)}
             >
               자세히
             </Button>
@@ -118,7 +120,7 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
             <Button
               color="white"
               width="71px"
-              onClick={() => history.push(`/detail/${page}/${id}`)}
+              onClick={() => history.push(`/order-detail/${page}/${id}`)}
             >
               자세히
             </Button>
@@ -141,11 +143,23 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
             <Button
               color="white"
               width="40px"
-              onClick={() => history.push('/cutomer-detail')}
+              onClick={() => id && history.push(`/cutomer-detail/${id}`)}
             >
               보기
             </Button>
-            <Button color="red" width="40px" fontColor="white">
+            <Button
+              color="red"
+              width="40px"
+              fontColor="white"
+              onClick={async () => {
+                if (id) {
+                  const res = await deleteCustomer(id);
+                  console.log(res);
+                  if (res) setListFetch();
+                  else window.alert('고객을 삭제하지 못했습니다.');
+                }
+              }}
+            >
               삭제
             </Button>
           </>
@@ -195,20 +209,20 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     }
     return (
       <List>
-        {orderList.map((item) => (
-          <Item key={item.orderId}>
+        {orderList.map((order) => (
+          <Item key={order.orderId}>
             <Content>
-              {item.orderedAt.split('T').join(' • ').split('.')[0]}
+              {order.orderedAt.split('T').join(' • ').split('.')[0]}
             </Content>
-            <Content>{`${item.ordererName}${
-              item.ordererChannelName && `(${item.ordererChannelName})`
+            <Content>{`${order.ordererName}${
+              order.ordererChannelName && `(${order.ordererChannelName})`
             }`}</Content>
-            {item.assigneeName && <Content>{item.assigneeName}</Content>}
-            {item.orderState && (
-              <Content>{renderOrderState(item.orderState)}</Content>
+            {order.assigneeName && <Content>{order.assigneeName}</Content>}
+            {order.orderState && (
+              <Content>{renderOrderState(order.orderState)}</Content>
             )}
-            {item.orderId && (
-              <ButtonBox>{renderButton(item.orderId)}</ButtonBox>
+            {order.orderId && (
+              <ButtonBox>{renderButton(order.orderId)}</ButtonBox>
             )}
           </Item>
         ))}
@@ -216,32 +230,54 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     );
   };
 
-  // const CustomerDataList = () => {
-  //   const viewList = list as OrderListModel[];
-  //   return (
-  //     <List>
-  //       {viewList.map((item) => (
-  //         <Item key={item.name}>
-  //           {item.createdAt && <Content>{item.createdAt}</Content>}
-  //           {item.name && (
-  //             <Content>
-  //               {item.name}
-  //               {item.channelName && `(${item.channelName})`}
-  //             </Content>
-  //           )}
-  //           {item.nickname && <Content>{item.nickname}</Content>}
-  //           {item.ch_name && <Content>{item.assignee}</Content>}
-  //           {item.email && <Content>{item.email}</Content>}
-  //           {item.mobile && <Content>{item.mobile}</Content>}
-  //           {item.state && changeState(item.state)}
-  //           <ButtonBox>
-  //             {item.userId && renderButton(page, item.userId)}
-  //           </ButtonBox>
-  //         </Item>
-  //       ))}
-  //     </List>
-  //   );
-  // };
+  const CustomerList = () => {
+    const customerList = list as CustomerDataModel[];
+    return (
+      <List>
+        {customerList.map((customer) => (
+          <Item key={customer.userId}>
+            {customer.createdAt && (
+              <Content>
+                {customer.createdAt.split('T').join(' • ').split('.')[0]}
+              </Content>
+            )}
+            {customer.name && (
+              <Content>
+                {customer.name}
+                {customer.channelName && `(${customer.channelName})`}
+              </Content>
+            )}
+            {customer.email && <Content>{customer.email}</Content>}
+            {customer.mobile && <Content>{customer.mobile}</Content>}
+            <ButtonBox>
+              {customer.userId && renderButton(customer.userId)}
+            </ButtonBox>
+          </Item>
+        ))}
+      </List>
+    );
+  };
+
+  const AdminList = () => {
+    const adminList = list as AdminModal[];
+    return (
+      <List>
+        {adminList.map((admin) => (
+          <Item key={admin.userId}>
+            {admin.createdAt && (
+              <Content>
+                {admin.createdAt.split('T').join(' • ').split('.')[0]}
+              </Content>
+            )}
+            {admin.name && <Content>{admin.name}</Content>}
+            {admin.nickname && <Content>{admin.nickname}</Content>}
+            {admin.email && <Content>{admin.email}</Content>}
+            <ButtonBox>{admin.userId && renderButton(admin.userId)}</ButtonBox>
+          </Item>
+        ))}
+      </List>
+    );
+  };
 
   return {
     list,
@@ -249,7 +285,8 @@ const useList = (page: string, fetch?: () => Promise<any>) => {
     changeState,
     renderButton,
     OrderList,
-    // CustomerDataList,
+    CustomerList,
+    AdminList,
   };
 };
 
@@ -330,7 +367,8 @@ const Button = styled.button<colorProps>`
   width: ${(props) => props.width};
   height: 32px;
   background-color: ${({ theme, color }) => theme.color[color]};
-  color: ${(props) => props.fontColor};
+  color: ${({ theme, fontColor }) =>
+    fontColor ? theme.color[fontColor] : theme.color.black};
   border-radius: 6px;
   font-size: 13px;
   line-height: 1.5384615385;

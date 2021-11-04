@@ -1,3 +1,4 @@
+import CustomerRequests from 'components/Customer/CustomerRequests';
 import useTime from 'hooks/useTime';
 import { useStores } from 'index';
 import { observer } from 'mobx-react-lite';
@@ -8,7 +9,6 @@ import OrderFetchData, {
   stateDatas,
 } from 'service/fetchOrder';
 import styled from 'styled-components';
-import CustomerRequests from './CustomerRequests';
 import EditsCnt from './EditsCnt';
 import SelectDeliveryDate from './SelectDeliveryDate';
 import SelectEditor from './SelectEditor';
@@ -117,7 +117,6 @@ const OrderControlPanel = observer(({ data, page }: OrderControlPanelProps) => {
 });
 
 const ControlForm = styled.form`
-  margin-top: 26px;
   padding-bottom: 32px;
   border-bottom: 1px solid ${({ theme }) => theme.color.stone};
 `;

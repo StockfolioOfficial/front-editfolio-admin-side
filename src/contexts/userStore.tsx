@@ -1,17 +1,12 @@
 import { makeAutoObservable } from 'mobx';
-
-interface UserModel {
-  name: string;
-  nickname: string;
-  userId: string;
-  email: string;
-}
+import { UserModel } from 'service/fetch';
 
 export const initUser: UserModel = {
   name: '',
   nickname: '',
   userId: '',
-  email: '',
+  username: '',
+  roles: [],
 };
 
 class User {
@@ -21,29 +16,28 @@ class User {
 
   userId;
 
-  email;
+  username;
 
   constructor() {
     makeAutoObservable(this);
     this.name = initUser.name;
     this.nickname = initUser.nickname;
     this.userId = initUser.userId;
-    this.email = initUser.email;
+    this.username = initUser.username;
   }
 
   setUser = (data: Partial<UserModel>) => {
     if (data.userId) this.userId = data.userId;
     if (data.name) this.name = data.name;
     if (data.nickname) this.nickname = data.nickname;
-    if (data.email) this.email = data.email;
+    if (data.username) this.username = data.username;
   };
 
   resetUser = () => {
-    console.log(this);
     this.userId = initUser.userId;
     this.name = initUser.name;
     this.nickname = initUser.nickname;
-    this.email = initUser.email;
+    this.username = initUser.username;
   };
 }
 

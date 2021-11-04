@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as ArrowSvg } from '../../../assets/styles/arrowPurple.svg';
+import { ReactComponent as ArrowSvg } from '../../assets/styles/arrowPurple.svg';
 
 export interface OptionType {
   text: string;

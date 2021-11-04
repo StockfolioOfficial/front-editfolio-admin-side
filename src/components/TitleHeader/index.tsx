@@ -1,45 +1,57 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 import { ReactComponent as SearchIcon } from '../../assets/images/ic_find_24.svg';
 import { ReactComponent as DeleteIcon } from '../../assets/images/ic_circle_square_24.svg';
 
 interface headerProps {
   title: string;
-  isSearch?: boolean;
-  placeholder?: string;
+  option?: {
+    isSearch?: boolean;
+    placeholder?: string;
+    addButtonText?: string;
+    goPage?: string;
+  };
 }
 
-const TitleHeader = ({ title, placeholder, isSearch }: headerProps) => {
+const TitleHeader = ({ title, option }: headerProps) => {
+  const history = useHistory();
   return (
     <Container>
       <Title>{title}</Title>
-      {isSearch && (
+      {option && option.isSearch && (
         <SearchBox>
-          <SearchInput placeholder={placeholder} />
+          <SearchInput placeholder={option?.placeholder} />
           <IconBox>
-            <DeleteSvg />
+            <DeleteIcon />
             <SearchSvg />
           </IconBox>
         </SearchBox>
+      )}
+      {option && option.addButtonText && (
+        <ActionButton
+          type="button"
+          onClick={() => option.goPage && history.push(option.goPage)}
+        >
+          {option.addButtonText}
+        </ActionButton>
       )}
     </Container>
   );
 };
 
 TitleHeader.defaultProps = {
-  isSearch: undefined,
-  placeholder: '',
+  option: undefined,
 };
 
-const Container = styled.header`
+const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 47px 0 23px;
-  border-bottom: 1px solid ${({ theme }) => theme.color.stone};
   max-width: 1280px;
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   font-size: 24px;
   font-weight: 700;
   line-height: 1.4166666667;
@@ -75,6 +87,16 @@ const SearchSvg = styled(SearchIcon)`
   margin-left: 16px;
 `;
 
-const DeleteSvg = styled(DeleteIcon)``;
+const ActionButton = styled.button`
+  margin-left: auto;
+  padding: 5px 16px;
+  font-size: 14px;
+  line-height: 22px;
+  ${({ theme }) => `
+    color: ${theme.color.white};
+    background: ${theme.color.purple};
+  `}
+  border-radius: 6px;
+`;
 
 export default TitleHeader;

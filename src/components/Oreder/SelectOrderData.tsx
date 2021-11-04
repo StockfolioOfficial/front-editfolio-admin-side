@@ -1,5 +1,5 @@
 import React from 'react';
-import OrderControlItem from './OrderControlItem';
+import OrderControlItem from 'components/Oreder/OrderControlItem';
 
 interface OrderDataProps {
   title: string;

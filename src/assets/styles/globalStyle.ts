@@ -41,7 +41,6 @@ main {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
 }
 ol,
 ul,
@@ -74,6 +73,8 @@ button {
   border: none;
   outline: none;
   background: transparent;
+}
+button {
   cursor: pointer;
 }
 a {
@@ -96,10 +97,10 @@ table {
   border-spacing: 0;
 }
 
-  * {
-    font-family: "Spoqa Han Sans Neo", "sans-serif";
-    box-sizing: border-box;
-  }
+* {
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  box-sizing: border-box;
+}
 `;
 
 export default GlobalStyle;

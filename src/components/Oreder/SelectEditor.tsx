@@ -1,5 +1,5 @@
 import { CreatorModel } from 'contexts/adminStore';
-import OrderControlItem from './OrderControlItem';
+import OrderControlItem from 'components/Oreder/OrderControlItem';
 
 interface SelectEditorProps {
   defaultValue?: string;

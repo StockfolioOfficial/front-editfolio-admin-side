@@ -55,7 +55,6 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   max-width: 336px;
-  margin: 0 auto;
 `;
 
 const ErrorMessage = styled.p`

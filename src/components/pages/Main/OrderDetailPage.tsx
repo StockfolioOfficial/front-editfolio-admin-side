@@ -3,13 +3,10 @@ import styled from 'styled-components';
 import { useParams } from 'react-router';
 import OrderFetchData, { OrderDetailModel } from 'service/fetchOrder';
 import TitleHeader from 'components/TitleHeader';
-import Header from '../Header';
-import Aside from '../../Aside/Aside';
-import ProductionInformation from './ProductionInformation';
-import OrderControlPanel from './OrderControlPanel';
-import CustomerInformation from './CustomerInformation';
+import OrderControlPanel from '../../Oreder/OrderControlPanel';
+import CustomerInformation from '../../Customer/CustomerInformation';
 
-const DetailPage = () => {
+const OrderDetailPage = () => {
   const [orderData, setOrderData] = useState<OrderDetailModel>({
     orderId: '',
     orderState: 0,
@@ -50,30 +47,39 @@ const DetailPage = () => {
 
   return (
     <>
-      <Header />
-      <MainBox>
-        <Aside />
-        <MainLayout>
-          <TitleHeader title={renderHeader()} />
-          <ProductionInformation orderId={orderData.orderId} />
-          <OrderControlPanel page={param.page} data={orderData} />
-          <CustomerInformation customerId={orderData.orderer} isRequest />
-        </MainLayout>
-      </MainBox>
+      <TitleHeader title={renderHeader()} />
+      <DetailSection>
+        <DetailSectionTitle>제작 정보</DetailSectionTitle>
+        <OrderNumber>(주문번호: {param.id})</OrderNumber>
+        <OrderControlPanel page={param.page} data={orderData} />
+      </DetailSection>
+      <DetailSection>
+        <DetailSectionTitle>고객 정보</DetailSectionTitle>
+        <CustomerInformation customerId={orderData.orderer} />
+      </DetailSection>
     </>
   );
 };
 
-const MainBox = styled.main`
-  display: flex;
+const DetailSection = styled.section`
+  padding-top: 24px;
+  border-top: 1px solid ${({ theme }) => theme.color.stone};
 `;
 
-const MainLayout = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 0 32px;
-  background-color: #fafafa;
+const DetailSectionTitle = styled.h3`
+  display: inline-block;
+  margin-bottom: 24px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
 `;
 
-export default DetailPage;
+const OrderNumber = styled.span`
+  margin-left: 8px;
+  color: #77828b;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+`;
+
+export default OrderDetailPage;

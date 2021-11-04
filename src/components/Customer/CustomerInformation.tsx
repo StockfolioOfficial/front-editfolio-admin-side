@@ -6,7 +6,7 @@ interface CustomerSubInformationTpye {
   customerId: string;
 }
 
-const CustomerSubInformation = ({ customerId }: CustomerSubInformationTpye) => {
+const CustomerInformation = ({ customerId }: CustomerSubInformationTpye) => {
   const [subList, setSubList] = useState<CustomerDetailModel>({
     channelLink: '',
     channelName: '',
@@ -35,7 +35,16 @@ const CustomerSubInformation = ({ customerId }: CustomerSubInformationTpye) => {
     <CostomerSubInfoRoot>
       <CostomerSubInfoWrap>
         <CustomerInfoTitle>고객명</CustomerInfoTitle>
-        <CustomerInfoContent>{subList.name}</CustomerInfoContent>
+        <CustomerInfoContent>
+          {subList.name}
+          {subList.channelName && '('}
+          {subList.channelName && (
+            <CustomerLink href={subList.channelLink} target="_blank">
+              {subList.channelName}
+            </CustomerLink>
+          )}
+          {subList.channelName && ')'}
+        </CustomerInfoContent>
       </CostomerSubInfoWrap>
       <CostomerSubInfoWrap>
         <CustomerInfoTitle>UID</CustomerInfoTitle>
@@ -57,18 +66,18 @@ const CustomerSubInformation = ({ customerId }: CustomerSubInformationTpye) => {
         <CustomerInfoTitle>페르소나</CustomerInfoTitle>
         {subList.personaLink ? (
           <CustomerInfoContent>
-            <CustomerLink href={subList.personaLink}>
+            <CustomerLink href={subList.personaLink} target="_blank">
               {subList.personaLink}
             </CustomerLink>
           </CustomerInfoContent>
         ) : (
-          <CustomerInfoContent>페스소나가 없습니다.</CustomerInfoContent>
+          <CustomerInfoContent>-</CustomerInfoContent>
         )}
       </CostomerSubInfoWrap>
       <CostomerSubInfoWrap>
         <CustomerInfoTitle>OneDrive</CustomerInfoTitle>
         <CustomerInfoContent>
-          <CustomerLink href={subList.onedriveLink}>
+          <CustomerLink href={subList.onedriveLink} target="_blank">
             {subList.onedriveLink}
           </CustomerLink>
         </CustomerInfoContent>
@@ -85,7 +94,9 @@ const CostomerSubInfoRoot = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  padding: 24px;
+  padding: 24px 24px 50px;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
 
   > div:nth-child(1),
   > div:nth-child(2),
@@ -97,6 +108,7 @@ const CostomerSubInfoRoot = styled.div`
 
 const CostomerSubInfoWrap = styled.div`
   width: 100%;
+  min-width: 348px;
   height: 48px;
   margin-bottom: 12px;
   display: flex;
@@ -105,6 +117,7 @@ const CostomerSubInfoWrap = styled.div`
 const CustomerInfoTitle = styled.div`
   width: 124px;
   display: flex;
+  padding-left: 12px;
   align-items: center;
   flex-shrink: 0;
   font-size: 13px;
@@ -133,7 +146,7 @@ const CustomerNoteWrap = styled(CostomerSubInfoWrap)`
 
 const CustomerNoteTitle = styled.div`
   width: 124px;
-  padding-top: 14px;
+  padding: 14px 0 0 12px;
   flex-shrink: 0;
   font-size: 13px;
   color: #77828b;
@@ -147,4 +160,4 @@ const CustomerNote = styled.div`
   line-height: 20px;
 `;
 
-export default CustomerSubInformation;
+export default CustomerInformation;

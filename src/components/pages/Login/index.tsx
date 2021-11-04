@@ -36,12 +36,11 @@ const Login = observer(() => {
     if (!res) return;
 
     const resData = await getAdminData();
-    console.log(resData);
     if (!resData) return;
     setUser({
       name: resData.name,
       nickname: resData.nickname,
-      email: resData.username,
+      username: resData.username,
       userId: resData.userId,
     });
     history.push('/');
@@ -93,7 +92,7 @@ const Img = styled.img`
   margin-bottom: 16px;
 `;
 
-const Title = styled.h1`
+const Title = styled.p`
   margin-bottom: 80px;
   font-size: 24px;
   font-weight: 700;

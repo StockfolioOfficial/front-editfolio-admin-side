@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface SelectListProps {
+interface SelectOptionProps {
   onReset: (value: string) => void;
   matchValue: { id: number; editor: string }[];
 }
 
-const SelectList = ({ matchValue, onReset }: SelectListProps) => {
+const SelectOption = ({ matchValue, onReset }: SelectOptionProps) => {
   return (
     <>
       <DropBox>
@@ -50,4 +50,4 @@ const DropBoxListButton = styled.button`
   line-height: 20px;
 `;
 
-export default SelectList;
+export default SelectOption;
