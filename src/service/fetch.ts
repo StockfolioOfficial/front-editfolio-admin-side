@@ -126,6 +126,92 @@ class FetchData {
     }
   };
 
+  editAdmin = async (
+    userId: string,
+    values: Pick<AdminModal, 'email' | 'name' | 'nickname'>,
+  ) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return false;
+    }
+
+    const headerDict: HeadersInit = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      return await fetch(`${baseUrl}/admin/${userId}`, {
+        method: 'PUT',
+        headers: new Headers(headerDict),
+        body: JSON.stringify(values),
+      }).then((res) => {
+        if (res.ok) return true;
+        console.log(res);
+        throw Error(res.statusText);
+      });
+    } catch (err) {
+      console.error(err, '어드민 정보를 수정하지 못했습니다.');
+      return false;
+    }
+  };
+
+  editAdminPw = async (userId: string, values: string) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return false;
+    }
+
+    const headerDict: HeadersInit = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      return await fetch(`${baseUrl}/admin/${userId}/pw`, {
+        method: 'PATCH',
+        headers: new Headers(headerDict),
+        body: JSON.stringify({ password: values }),
+      }).then((res) => {
+        if (res.ok) return true;
+        console.log(res);
+        throw Error(res.statusText);
+      });
+    } catch (err) {
+      console.error(err, '비밀번호를 변경하지 못했습니다.');
+      return false;
+    }
+  };
+
+  deleteAdmin = async (userId: string) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return false;
+    }
+
+    const headerDict: HeadersInit = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      return await fetch(`${baseUrl}/admin/${userId}`, {
+        method: 'DELETE',
+        headers: new Headers(headerDict),
+      }).then((res) => {
+        if (res.ok) return true;
+        console.log(res);
+        throw Error(res.statusText);
+      });
+    } catch (err) {
+      console.error(err, '계정을 삭제하지 못했습니다.');
+      return false;
+    }
+  };
+
   getAdminList = async () => {
     const token = localStorage.getItem('editfolio-admin-token');
     if (!token) {

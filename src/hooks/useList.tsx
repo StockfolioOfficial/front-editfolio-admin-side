@@ -87,7 +87,7 @@ const useList = (
 
   const renderButton = (id?: string, isSuper?: boolean) => {
     const history = useHistory();
-    const { deleteCustomer } = new FetchData();
+    const { deleteCustomer, deleteAdmin } = new FetchData();
     const { takeMeOrder } = new OrderFetchData();
     switch (page) {
       case 'request':
@@ -126,11 +126,32 @@ const useList = (
             <UnderLineButton
               color="white"
               width="43px"
-              onClick={() => history.push(`/admin-edit/${id}`)}
+              onClick={() =>
+                history.push({
+                  pathname: `/admin-edit/${id}`,
+                  state: {
+                    data: (list as AdminModal[]).find(
+                      (item) => item.userId === id,
+                    ),
+                  },
+                })
+              }
             >
               수정
             </UnderLineButton>
-            <Button color="red" width="43px" fontColor="white">
+            <Button
+              color="red"
+              width="43px"
+              fontColor="white"
+              onClick={async () => {
+                const res = window.confirm('정말 삭제하겠습니까?');
+                if (!res) return;
+                if (!id) return;
+                const deleteRes = await deleteAdmin(id);
+                if (!deleteRes) window.alert('계정을 삭제하지 못했습니다.');
+                else setListFetch();
+              }}
+            >
               삭제
             </Button>
           </>

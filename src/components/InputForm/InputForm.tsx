@@ -31,9 +31,9 @@ const InputForm = ({
   return (
     <Form
       onSubmit={(e) => {
+        e.preventDefault();
         handleError();
         handleSubmit();
-        e.preventDefault();
       }}
     >
       {inputs.map((input) => (

@@ -13,7 +13,7 @@ const UIButton = ({
   text,
   color,
   ...rest
-}: buttonProps & React.HTMLAttributes<HTMLButtonElement>) => {
+}: buttonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <Button width={width} color={color || 'black'} {...rest}>
       {text}

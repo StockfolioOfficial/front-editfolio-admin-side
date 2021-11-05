@@ -16,6 +16,8 @@ import Aside from 'components/pages/Aside';
 import CustomerAddPage from 'components/Customer/CustomerAddPage';
 import CustomerDetailPage from 'components/pages/Main/CustomerDetailPage';
 import AdminAddPage from 'components/Admin/AdminAddPage';
+import AdminEditPage from 'components/Admin/AdminEditPage';
+import AdminEditPwPage from 'components/Admin/AdminEditPwPage';
 
 function Wrapper({ children }: React.HTMLAttributes<HTMLDivElement>) {
   const history = useHistory();
@@ -77,6 +79,12 @@ function RenderMain() {
             />
             <Route exact path="/admin-list" component={AdminListPage} />
             <Route exact path="/admin-add" component={AdminAddPage} />
+            <Route exact path="/admin-edit/:id" component={AdminEditPage} />
+            <Route
+              exact
+              path="/admin-edit-pw/:id"
+              component={AdminEditPwPage}
+            />
             <Route exact path="/customer-list" component={CustomerListPage} />
             <Route exact path="/customer-add" component={CustomerAddPage} />
             <Route
