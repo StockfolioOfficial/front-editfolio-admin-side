@@ -15,6 +15,7 @@ const theme: DefaultTheme = {
     stone: '#EEEEEE',
     white: '#FFFFFF',
     red: '#FF6359',
+    red2: '#FF8078',
   },
 };
 

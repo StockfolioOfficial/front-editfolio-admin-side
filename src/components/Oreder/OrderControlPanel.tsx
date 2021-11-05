@@ -9,7 +9,7 @@ import OrderFetchData, {
   stateDatas,
 } from 'service/fetchOrder';
 import styled from 'styled-components';
-import EditsCnt from './EditsCnt';
+// import EditsCnt from './EditsCnt';
 import SelectDeliveryDate from './SelectDeliveryDate';
 import SelectEditor from './SelectEditor';
 import SelectOrderData from './SelectOrderData';
@@ -73,41 +73,40 @@ const OrderControlPanel = observer(({ data, page }: OrderControlPanelProps) => {
     <>
       <ControlForm onSubmit={page !== 'complete' ? handleSubmit : undefined}>
         <LineLayout>
-          <LineList>
+          <Li>
             <SelectOrderData
               title="주문 일시"
               data={data.orderedAt?.replace('T', ' • ').split('.')[0]}
             />
-          </LineList>
-          <LineList>
+          </Li>
+          <DueDateWrap>
             <SelectDeliveryDate
               defaultValue={data.dueDate?.split('T')[0]}
               isComplete={page === 'complete'}
             />
-          </LineList>
-          <LineList>
+          </DueDateWrap>
+          <Li>
             <SelectEditor
               defaultValue={data.assignee?.assigneeName}
               options={creators}
               isComplete={page === 'complete'}
             />
-          </LineList>
-          <LineList>
+          </Li>
+          <StateWrap>
             <SelectState
               defaultState={{
                 id: data.orderState,
                 content: data.orderStateContent,
               }}
             />
-          </LineList>
+          </StateWrap>
           {page !== 'complete' && (
-            <LineList>
-              {page === 'edit' ? (
-                <EditsCnt editCount={data.remainingEditCount} />
-              ) : (
-                <SelectSubmit />
+            <ButtonWrap>
+              <SelectSubmit />
+              {page === 'edit' && (
+                <p>남은 수정요청 수: {data.remainingEditCount}</p>
               )}
-            </LineList>
+            </ButtonWrap>
           )}
         </LineLayout>
         <CustomerRequests content={data.requirement} />
@@ -127,8 +126,8 @@ const LineLayout = styled.ul`
   margin: 0 24px 0 8px;
 `;
 
-const LineList = styled.li`
-  min-width: 188px;
+const Li = styled.li`
+  min-width: 180px;
   display: inline-flex;
   flex-direction: column;
   margin-right: 32px;
@@ -136,6 +135,30 @@ const LineList = styled.li`
 
   &:last-child {
     margin-right: 0;
+  }
+`;
+
+const DueDateWrap = styled(Li)`
+  input {
+    width: 188px;
+  }
+`;
+
+const StateWrap = styled(Li)`
+  input {
+    width: 208px;
+  }
+`;
+
+const ButtonWrap = styled(Li)`
+  flex-direction: row;
+  > p {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    margin: 28px 8px 0 48px;
+    font-size: 13px;
+    color: ${({ theme }) => theme.color.gray};
   }
 `;
 

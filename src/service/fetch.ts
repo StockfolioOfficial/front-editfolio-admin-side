@@ -79,7 +79,7 @@ class FetchData {
     localStorage.removeItem('editfolio-admin-token');
   };
 
-  getAdminData = async () => {
+  getMyData = async () => {
     const token = localStorage.getItem('editfolio-admin-token');
     if (!token) {
       console.error('토큰이 없습니다.');
@@ -93,6 +93,57 @@ class FetchData {
       return res;
     } catch {
       console.error('정보를 가져올 수 없습니다.');
+    }
+  };
+
+  createAdmin = async (
+    values: Pick<AdminModal, 'email' | 'name' | 'nickname'> &
+      Record<'password', string>,
+  ) => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return false;
+    }
+
+    const headerDict: HeadersInit = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      await fetch(`${baseUrl}/admin`, {
+        method: 'POST',
+        headers: new Headers(headerDict),
+        body: JSON.stringify(values),
+      }).then((res) => {
+        if (res.status > 300) throw Error(res.statusText);
+      });
+      return true;
+    } catch (err) {
+      console.error(err, '어드민을 생성하지 못했습니다.');
+      return false;
+    }
+  };
+
+  getAdminList = async () => {
+    const token = localStorage.getItem('editfolio-admin-token');
+    if (!token) {
+      console.error('토큰이 없습니다.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${baseUrl}/admin`, {
+        headers: new Headers(this.makeHader(token)),
+      }).then<AdminModal[]>((res) => {
+        if (res.status === 200) return res.json();
+        if (res.status === 204) return [];
+        throw Error('어드민 목록을 가져올 수 없습니다.');
+      });
+      return res;
+    } catch {
+      console.error('어드민 목록을 가져올 수 없습니다.');
     }
   };
 
@@ -211,27 +262,6 @@ class FetchData {
     } catch (err) {
       console.error(err);
       return false;
-    }
-  };
-
-  getAdminList = async () => {
-    const token = localStorage.getItem('editfolio-admin-token');
-    if (!token) {
-      console.error('토큰이 없습니다.');
-      return;
-    }
-
-    try {
-      const res = await fetch(`${baseUrl}/admin`, {
-        headers: new Headers(this.makeHader(token)),
-      }).then<AdminModal[]>((res) => {
-        if (res.status === 200) return res.json();
-        if (res.status === 204) return [];
-        throw Error('어드민 목록을 가져올 수 없습니다.');
-      });
-      return res;
-    } catch {
-      console.error('어드민 목록을 가져올 수 없습니다.');
     }
   };
 }

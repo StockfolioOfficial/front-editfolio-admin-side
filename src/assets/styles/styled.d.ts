@@ -17,6 +17,7 @@ declare module 'styled-components' {
       stone: string;
       white: string;
       red: string;
+      red2: string;
     };
   }
 }

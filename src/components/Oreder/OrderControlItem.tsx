@@ -121,7 +121,7 @@ const OrderContentBox = styled.div`
 `;
 
 const OrderSelectInput = styled.input`
-  min-width: 190px;
+  min-width: 180px;
   height: 100%;
   position: relative;
   padding: 12px 12px 12px 16px;

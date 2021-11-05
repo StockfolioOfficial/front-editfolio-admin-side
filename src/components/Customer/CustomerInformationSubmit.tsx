@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import UIButton, { LineButton } from 'components/InputForm/UIButton';
 import FetchData, { CustomerDetailModel } from 'service/fetch';
+import UIButton, { LineButton } from '../Buttons/UIButton';
 
 interface CustomerSubInformationTpye {
   customerId: string;

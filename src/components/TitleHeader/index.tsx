@@ -47,8 +47,7 @@ TitleHeader.defaultProps = {
 const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 47px 0 23px;
-  max-width: 1280px;
+  padding: 47px 40px 23px 0;
 `;
 
 const Title = styled.h2`

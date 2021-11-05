@@ -18,12 +18,15 @@ class User {
 
   username;
 
+  roles: string[];
+
   constructor() {
     makeAutoObservable(this);
     this.name = initUser.name;
     this.nickname = initUser.nickname;
     this.userId = initUser.userId;
     this.username = initUser.username;
+    this.roles = initUser.roles;
   }
 
   setUser = (data: Partial<UserModel>) => {
@@ -31,6 +34,7 @@ class User {
     if (data.name) this.name = data.name;
     if (data.nickname) this.nickname = data.nickname;
     if (data.username) this.username = data.username;
+    if (data.roles) this.roles = data.roles;
   };
 
   resetUser = () => {
@@ -38,6 +42,7 @@ class User {
     this.name = initUser.name;
     this.nickname = initUser.nickname;
     this.username = initUser.username;
+    this.roles = initUser.roles;
   };
 }
 

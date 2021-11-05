@@ -10,21 +10,22 @@ import RequestProductingPage from 'components/pages/Main/RequestProductingPage';
 import RequestFinishPage from 'components/pages/Main/RequestFinishPage';
 import RequestEditPage from 'components/pages/Main/RequestEditPage';
 import OrderDetailPage from 'components/pages/Main/OrderDetailPage';
-import AdminList from 'components/pages/Main/AdminListPage';
+import AdminListPage from 'components/pages/Main/AdminListPage';
 import CustomerListPage from 'components/pages/Main/CustomerListPage';
 import Aside from 'components/pages/Aside';
 import CustomerAddPage from 'components/Customer/CustomerAddPage';
 import CustomerDetailPage from 'components/pages/Main/CustomerDetailPage';
+import AdminAddPage from 'components/Admin/AdminAddPage';
 
 function Wrapper({ children }: React.HTMLAttributes<HTMLDivElement>) {
   const history = useHistory();
   const { userStore, adminStore } = useStores();
   const { setUser } = userStore;
   const { setCreator } = adminStore;
-  const { getAdminData, getCreatorList } = new FetchData();
+  const { getMyData, getCreatorList } = new FetchData();
 
   async function checkToken() {
-    const res = await getAdminData();
+    const res = await getMyData();
     if (!res) {
       history.push('/login');
       return;
@@ -34,6 +35,7 @@ function Wrapper({ children }: React.HTMLAttributes<HTMLDivElement>) {
       nickname: res.nickname,
       username: res.username,
       userId: res.userId,
+      roles: res.roles,
     });
     const creatorList = await getCreatorList();
     if (!creatorList) return;
@@ -73,7 +75,8 @@ function RenderMain() {
               path="/order-detail/:page/:id"
               component={OrderDetailPage}
             />
-            <Route exact path="/admin-list" component={AdminList} />
+            <Route exact path="/admin-list" component={AdminListPage} />
+            <Route exact path="/admin-add" component={AdminAddPage} />
             <Route exact path="/customer-list" component={CustomerListPage} />
             <Route exact path="/customer-add" component={CustomerAddPage} />
             <Route
@@ -93,6 +96,7 @@ const MainBox = styled.main`
 `;
 
 const MainLayout = styled.div`
+  max-width: 1280px;
   display: flex;
   flex-direction: column;
   width: calc(100% - 324px);

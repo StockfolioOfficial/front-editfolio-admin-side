@@ -1,5 +1,5 @@
-import UIButton from 'components/InputForm/UIButton';
 import React from 'react';
+import UIButton from './UIButton';
 
 const LoginButton = () => {
   return (

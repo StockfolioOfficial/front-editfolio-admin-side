@@ -8,11 +8,6 @@ interface buttonProps {
   width: string;
 }
 
-interface buttonStyle {
-  color: keyof typeof theme.color;
-  width: string;
-}
-
 const UIButton = ({
   width,
   text,
@@ -26,11 +21,12 @@ const UIButton = ({
   );
 };
 
-const Button = styled.button<buttonStyle>`
+const Button = styled.button<Pick<buttonProps, 'width' | 'color'>>`
   width: ${({ width }) => width};
   height: 48px;
   margin: 28px 0;
-  background-color: ${({ theme, color }) => theme.color[color]};
+  background-color: ${({ theme, color }) =>
+    color ? theme.color[color] : theme.color.white};
   border-radius: 6px;
   color: ${({ theme, color }) =>
     color === 'white' ? theme.color.black : theme.color.white};

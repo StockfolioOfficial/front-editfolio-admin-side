@@ -5,16 +5,22 @@ import FetchData from 'service/fetch';
 
 const CATEGORY = ['날짜', '이름', '닉네임', '이메일'];
 
-const AdminList = () => {
+const AdminListPage = () => {
   const { getAdminList } = new FetchData();
   const { CategoryView, AdminList } = useList('adminList', getAdminList);
   return (
     <>
-      <TitleHeader title="어드민 목록" />
+      <TitleHeader
+        title="어드민 목록"
+        option={{
+          addButtonText: '어드민 추가',
+          goPage: '/admin-add',
+        }}
+      />
       <CategoryView category={CATEGORY} />
       <AdminList />
     </>
   );
 };
 
-export default AdminList;
+export default AdminListPage;

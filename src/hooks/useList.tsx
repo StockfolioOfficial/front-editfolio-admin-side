@@ -1,4 +1,7 @@
 import { theme } from 'assets/styles/theme';
+import { useStores } from 'index';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import FetchData, { AdminModal, CustomerDataModel } from 'service/fetch';
@@ -82,79 +85,73 @@ const useList = (
     }
   };
 
-  const renderButton = (id?: string) => {
+  const renderButton = (id?: string, isSuper?: boolean) => {
     const history = useHistory();
     const { deleteCustomer } = new FetchData();
     const { takeMeOrder } = new OrderFetchData();
     switch (page) {
       case 'request':
-        return (
-          <>
-            <Button
-              color="purple"
-              width="84px"
-              fontColor="white"
-              onClick={() =>
-                id &&
-                takeMeOrder(id).then(() =>
-                  history.push(`/order-detail/ongoing/${id}`),
-                )
-              }
-            >
-              가져가기
-            </Button>
-            <Button
-              color="white"
-              width="71px"
-              onClick={() => history.push(`/order-detail/${page}/${id}`)}
-            >
-              자세히
-            </Button>
-          </>
-        );
       case 'ongoing':
       case 'edit':
       case 'complete':
         return (
           <>
-            <Button
+            {page === 'request' && (
+              <Button
+                color="purple"
+                width="84px"
+                fontColor="white"
+                onClick={() =>
+                  id &&
+                  takeMeOrder(id).then(
+                    (res) => res && history.push(`/order-detail/ongoing/${id}`),
+                  )
+                }
+              >
+                가져가기
+              </Button>
+            )}
+            <UnderLineButton
               color="white"
               width="71px"
               onClick={() => history.push(`/order-detail/${page}/${id}`)}
             >
               자세히
-            </Button>
+            </UnderLineButton>
           </>
         );
       case 'adminList':
-        return (
+        return isSuper ? (
           <>
-            <Button color="purple" width="40px" fontColor="white">
+            <UnderLineButton
+              color="white"
+              width="43px"
+              onClick={() => history.push(`/admin-edit/${id}`)}
+            >
               수정
-            </Button>
-            <Button color="red" width="40px" fontColor="white">
+            </UnderLineButton>
+            <Button color="red" width="43px" fontColor="white">
               삭제
             </Button>
           </>
-        );
+        ) : undefined;
       case 'customerList':
         return (
           <>
-            <Button
+            <UnderLineButton
               color="white"
-              width="40px"
+              width="43px"
               onClick={() => id && history.push(`/cutomer-detail/${id}`)}
             >
               보기
-            </Button>
+            </UnderLineButton>
             <Button
               color="red"
-              width="40px"
+              width="43px"
               fontColor="white"
               onClick={async () => {
                 if (id) {
                   const res = await deleteCustomer(id);
-                  console.log(res);
                   if (res) setListFetch();
                   else window.alert('고객을 삭제하지 못했습니다.');
                 }
@@ -258,8 +255,10 @@ const useList = (
     );
   };
 
-  const AdminList = () => {
+  const AdminList = observer(() => {
     const adminList = list as AdminModal[];
+    const { userStore } = useStores();
+    const { roles } = userStore;
     return (
       <List>
         {adminList.map((admin) => (
@@ -272,12 +271,15 @@ const useList = (
             {admin.name && <Content>{admin.name}</Content>}
             {admin.nickname && <Content>{admin.nickname}</Content>}
             {admin.email && <Content>{admin.email}</Content>}
-            <ButtonBox>{admin.userId && renderButton(admin.userId)}</ButtonBox>
+            <ButtonBox>
+              {admin.userId &&
+                renderButton(admin.userId, toJS(roles).includes('SUPER_ADMIN'))}
+            </ButtonBox>
           </Item>
         ))}
       </List>
     );
-  };
+  });
 
   return {
     list,
@@ -346,7 +348,6 @@ const ButtonBox = styled.div`
 
 const CategoryList = styled.ul`
   display: flex;
-  max-width: 1200px;
   margin: 16px 0 24px;
   border-bottom: 1px solid ${({ theme }) => theme.color.paleBlue};
 `;
@@ -361,18 +362,29 @@ const CategoryItem = styled.li`
 `;
 
 const Button = styled.button<colorProps>`
+  width: ${({ width }) => width || '100%'};
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${(props) => props.width};
-  height: 32px;
-  background-color: ${({ theme, color }) => theme.color[color]};
+  padding: 5px 0;
+  font-size: 13px;
+  line-height: 20px;
   color: ${({ theme, fontColor }) =>
     fontColor ? theme.color[fontColor] : theme.color.black};
+  background-color: ${({ theme, color }) => theme.color[color]};
   border-radius: 6px;
-  font-size: 13px;
-  line-height: 1.5384615385;
-  border: 1px solid gray;
+
+  &:hover {
+    ${({ color }) => {
+      if (color === 'white')
+        return `background-color: ${theme.color.paleBlue};`;
+      if (color === 'red') return `background-color: ${theme.color.red2};`;
+    }}
+  }
+`;
+
+const UnderLineButton = styled(Button)`
+  border: 1px solid ${({ theme }) => theme.color.stone};
 `;
 
 export default useList;

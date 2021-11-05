@@ -1,5 +1,5 @@
 import React from 'react';
-import UIButton from 'components/InputForm/UIButton';
+import UIButton from './UIButton';
 
 const AddAdmin = () => {
   return (

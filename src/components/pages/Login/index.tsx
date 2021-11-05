@@ -18,7 +18,7 @@ const Login = observer(() => {
 
   const { isValid, error, handleError } = useValidate(values);
 
-  const { login, getAdminData } = new FetchData();
+  const { login, getMyData } = new FetchData();
 
   const { userStore } = useStores();
   const { setUser } = userStore;
@@ -35,7 +35,7 @@ const Login = observer(() => {
 
     if (!res) return;
 
-    const resData = await getAdminData();
+    const resData = await getMyData();
     if (!resData) return;
     setUser({
       name: resData.name,

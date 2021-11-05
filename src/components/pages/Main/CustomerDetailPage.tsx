@@ -4,7 +4,7 @@ import TitleHeader from 'components/TitleHeader';
 import styled from 'styled-components';
 import CustomerInformationSubmit from 'components/Customer/CustomerInformationSubmit';
 import { FormEvent, useState } from 'react';
-import UIButton from 'components/InputForm/UIButton';
+import UIButton from 'components/Buttons/UIButton';
 import FetchData, { CustomerDetailModel } from 'service/fetch';
 
 const CustomerDetailPage = () => {
