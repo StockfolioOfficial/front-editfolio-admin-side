@@ -45,7 +45,6 @@ function Wrapper({ children }: React.HTMLAttributes<HTMLDivElement>) {
   }
 
   useEffect(() => {
-    console.log('스타트');
     checkToken();
   }, []);
   return <>{children}</>;

@@ -34,7 +34,7 @@ const AdminEditPwPage = () => {
 
     const res = await editAdminPw(param.id, values.password);
 
-    if (res) history.push('/admin-list');
+    if (res) history.goBack();
     else window.alert('비밀번호를 변경하지 못했습니다.');
     reset();
   };

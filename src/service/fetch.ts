@@ -148,7 +148,6 @@ class FetchData {
         body: JSON.stringify(values),
       }).then((res) => {
         if (res.ok) return true;
-        console.log(res);
         throw Error(res.statusText);
       });
     } catch (err) {
@@ -176,7 +175,6 @@ class FetchData {
         body: JSON.stringify({ password: values }),
       }).then((res) => {
         if (res.ok) return true;
-        console.log(res);
         throw Error(res.statusText);
       });
     } catch (err) {
@@ -203,7 +201,6 @@ class FetchData {
         headers: new Headers(headerDict),
       }).then((res) => {
         if (res.ok) return true;
-        console.log(res);
         throw Error(res.statusText);
       });
     } catch (err) {

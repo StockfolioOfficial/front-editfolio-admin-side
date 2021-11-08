@@ -201,7 +201,7 @@ class OrderFetchData {
           dueDate: orderData.dueDate,
           orderState: orderData.orderState,
         }),
-      }).then((res) => console.log(res));
+      });
       return true;
     } catch {
       console.error('주문 정보를 저장할 수 없습니다.');
@@ -217,11 +217,10 @@ class OrderFetchData {
     }
 
     try {
-      const resId = await fetch(`${this.orderBaseUrl}/${orderId}/assign-self`, {
+      await fetch(`${this.orderBaseUrl}/${orderId}/assign-self`, {
         method: 'POST',
         headers: new Headers(this.makeHader(token)),
       }).then<Pick<OrderDetailModel, 'orderId'>>((res) => res.json());
-      console.log(resId.orderId);
       return true;
     } catch {
       console.error('주문 정보를 저장할 수 없습니다.');

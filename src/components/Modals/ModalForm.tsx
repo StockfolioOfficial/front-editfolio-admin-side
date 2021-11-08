@@ -18,6 +18,7 @@ interface ModelProps {
 const ModelForm = ({ content }: ModelProps) => {
   const { description, subDescription, actionButton } = content;
   const onClose = () => {
+    // 모델 닫기 기능 추가 요망
     console.log('close');
   };
 

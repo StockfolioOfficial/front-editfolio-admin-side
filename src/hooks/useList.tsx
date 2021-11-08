@@ -229,9 +229,7 @@ const useList = (
       <List>
         {orderList.map((order) => (
           <Item key={order.orderId}>
-            <Content>
-              {order.orderedAt.split('T').join(' • ').split('.')[0]}
-            </Content>
+            <Content>{new Date(order.orderedAt).toLocaleString()}</Content>
             <Content>{`${order.ordererName}${
               order.ordererChannelName && `(${order.ordererChannelName})`
             }`}</Content>
@@ -255,9 +253,7 @@ const useList = (
         {customerList.map((customer) => (
           <Item key={customer.userId}>
             {customer.createdAt && (
-              <Content>
-                {customer.createdAt.split('T').join(' • ').split('.')[0]}
-              </Content>
+              <Content>{new Date(customer.createdAt).toLocaleString()}</Content>
             )}
             {customer.name && (
               <Content>
@@ -285,9 +281,7 @@ const useList = (
         {adminList.map((admin) => (
           <Item key={admin.userId}>
             {admin.createdAt && (
-              <Content>
-                {admin.createdAt.split('T').join(' • ').split('.')[0]}
-              </Content>
+              <Content>{new Date(admin.createdAt).toLocaleString()}</Content>
             )}
             {admin.name && <Content>{admin.name}</Content>}
             {admin.nickname && <Content>{admin.nickname}</Content>}

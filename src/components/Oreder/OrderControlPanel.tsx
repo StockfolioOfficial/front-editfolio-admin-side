@@ -9,7 +9,6 @@ import OrderFetchData, {
   stateDatas,
 } from 'service/fetchOrder';
 import styled from 'styled-components';
-// import EditsCnt from './EditsCnt';
 import SelectDeliveryDate from './SelectDeliveryDate';
 import SelectEditor from './SelectEditor';
 import SelectOrderData from './SelectOrderData';
@@ -58,14 +57,12 @@ const OrderControlPanel = observer(({ data, page }: OrderControlPanelProps) => {
       window.alert('상태값을 설정해주세요.');
       return;
     }
-    console.log(stateValue, formData.get('state'));
     const saveRes = await saveOrderDetailData({
       orderId: data.orderId,
       dueDate: dueDataValue,
       assignee: assigneeValue,
       orderState: stateValue,
     });
-    console.log(saveRes);
     if (saveRes) history.push('/request-producting');
   };
 
@@ -76,7 +73,7 @@ const OrderControlPanel = observer(({ data, page }: OrderControlPanelProps) => {
           <Li>
             <SelectOrderData
               title="주문 일시"
-              data={data.orderedAt?.replace('T', ' • ').split('.')[0]}
+              data={new Date(data.orderedAt).toLocaleString() || '-'}
             />
           </Li>
           <DueDateWrap>

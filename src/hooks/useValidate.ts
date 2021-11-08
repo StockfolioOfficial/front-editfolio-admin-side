@@ -20,8 +20,6 @@ const useValidate = ({ id, password }: validateInter) => {
 
   const handleError = useCallback(() => {
     setError(message);
-    console.log(idValid.test(id as string));
-    console.log(passwordValid.test(password as string));
   }, [id, password]);
 
   return { isValid, error, handleError };
